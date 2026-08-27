@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  >
+
+  <title>WebAR CPR Training</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Progress area */
+    #progressContainer {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 82%;
+      max-width: 500px;
+      z-index: 1000;
+
+      background: rgba(0, 0, 0, 0.60);
+      padding: 10px 14px;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+
+    #stepCounter {
+      color: white;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    #progressBackground {
+      width: 100%;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.30);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 12.5%;
+      background: #1565C0;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    /* Instruction panel */
+    #instructionPanel {
+      position: fixed;
+      top: 105px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 82%;
+      max-width: 520px;
+
+      z-index: 999;
+
+      background: rgba(0, 0, 0, 0.68);
+      color: white;
+
+      padding: 12px 15px;
+      border-radius: 12px;
+
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.35;
+
+      box-sizing: border-box;
+    }
+
+    #stepTitle {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    /* Buttons */
+    #buttonContainer {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      z-index: 1000;
+
+      display: flex;
+      gap: 15px;
+    }
+
+    .navButton {
+      padding: 14px 22px;
+
+      border: none;
+      border-radius: 10px;
+
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+
+      min-width: 125px;
+    }
+
+    #backButton {
+      background: #555555;
+    }
+
+    #nextButton {
+      background: #1565C0;
+    }
+
+    .navButton:disabled {
+      opacity: 0.40;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Progress -->
+  <div id="progressContainer">
+    <div id="stepCounter">
+      Step 1 of 8
+    </div>
+
+    <div id="progressBackground">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- CPR instruction -->
+  <div id="instructionPanel">
+    <div id="stepTitle">STEP 1</div>
+    <div id="stepDescription">Check responsiveness</div>
+  </div>
+
+
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets.mind;"
+    color-space="sRGB"
+    renderer="colorManagement: true; physicallyCorrectLights: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: true"
+  >
+
+    <a-assets timeout="60000">
+
+      <a-asset-item
+        id="asset0"
+        src="./models/patient.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset1"
+        src="./models/smartphone.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset2"
+        src="./models/head.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset3"
+        src="./models/lungs.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset4"
+        src="./models/hand.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset5"
+        src="./models/heart.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset6"
+        src="./models/alarm_clock.glb">
+      </a-asset-item>
+
+      <a-asset-item
+        id="asset7"
+        src="./models/ambulance.glb">
+      </a-asset-item>
+
+    </a-assets>
+
+
+    <a-light
+      type="ambient"
+      color="#ffffff"
+      intensity="1.5">
+    </a-light>
+
+    <a-light
+      type="directional"
+      color="#ffffff"
+      intensity="1.5"
+      position="1 2 3">
+    </a-light>
+
+
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false">
+    </a-camera>
+
+
+    <!-- Marker -->
+    <a-entity mindar-image-target="targetIndex: 0">
+
+      <!-- Step 1: Patient -->
+      <a-entity
+        id="model0"
+        gltf-model="#asset0"
+        position="0 0 0.18"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        visible="true">
+      </a-entity>
+
+
+      <!-- Step 2: Smartphone -->
+      <a-entity
+        id="model1"
+        gltf-model="#asset1"
+        position="0 0 0.18"
+        rotation="0 0 0"
+        scale="0.08 0.08 0.08"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 3: Head -->
+      <a-entity
+        id="model2"
+        gltf-model="#asset2"
+        position="0 -0.10 0.40"
+        rotation="0 0 0"
+        scale="1.5 1.5 1.5"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 4: Lungs -->
+      <a-entity
+        id="model3"
+        gltf-model="#asset3"
+        position="-0.15 0 0.18"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 5: Hand -->
+      <a-entity
+        id="model4"
+        gltf-model="#asset4"
+        position="0 -0.15 0.18"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 6: Heart -->
+      <a-entity
+        id="model5"
+        gltf-model="#asset5"
+        position="0 0 0.18"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 7: Alarm clock -->
+      <a-entity
+        id="model6"
+        gltf-model="#asset6"
+        position="0 0 0.18"
+        rotation="0 0 0"
+        scale="1.2 1.2 1.2"
+        visible="false">
+      </a-entity>
+
+
+      <!-- Step 8: Ambulance -->
+      <a-entity
+        id="model7"
+        gltf-model="#asset7"
+        position="-0.15 0 0.18"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        visible="false">
+      </a-entity>
+
+    </a-entity>
+
+  </a-scene>
+
+
+  <!-- Navigation -->
+  <div id="buttonContainer">
+
+    <button
+      id="backButton"
+      class="navButton"
+      type="button">
+      Back Step
+    </button>
+
+    <button
+      id="nextButton"
+      class="navButton"
+      type="button">
+      Next Step
+    </button>
+
+  </div>
+
+
+  <script>
+
+    const steps = [
+      {
+        title: "STEP 1",
+        text: "Check responsiveness. Gently tap the person and ask loudly: Are you okay?"
+      },
+
+      {
+        title: "STEP 2",
+        text: "Call emergency services. In Germany, dial 112."
+      },
+
+      {
+        title: "STEP 3",
+        text: "Open the airway. Gently tilt the head back and lift the chin upward."
+      },
+
+      {
+        title: "STEP 4",
+        text: "Check breathing. Look, listen and feel for normal breathing."
+      },
+
+      {
+        title: "STEP 5",
+        text: "Place both hands in the centre of the chest."
+      },
+
+      {
+        title: "STEP 6",
+        text: "Start chest compressions. Push the chest down firmly."
+      },
+
+      {
+        title: "STEP 7",
+        text: "Push hard and fast at a steady rhythm of about 100–120 compressions per minute."
+      },
+
+      {
+        title: "STEP 8",
+        text: "Continue CPR until emergency help arrives or the person starts breathing normally."
+      }
+    ];
+
+
+    const colors = [
+      "#1565C0",
+      "#EF6C00",
+      "#455A64",
+      "#00ACC1",
+      "#D32F2F",
+      "#7B1FA2",
+      "#F9A825",
+      "#2E7D32"
+    ];
+
+
+    let currentStep = 0;
+
+
+    const stepTitle =
+      document.querySelector("#stepTitle");
+
+    const stepDescription =
+      document.querySelector("#stepDescription");
+
+    const stepCounter =
+      document.querySelector("#stepCounter");
+
+    const progressBar =
+      document.querySelector("#progressBar");
+
+    const backButton =
+      document.querySelector("#backButton");
+
+    const nextButton =
+      document.querySelector("#nextButton");
+
+
+    function updateStep() {
+
+      /* Instruction text */
+
+      stepTitle.textContent =
+        steps[currentStep].title;
+
+      stepDescription.textContent =
+        steps[currentStep].text;
+
+
+      /* 3D model */
+
+      for (let i = 0; i < steps.length; i++) {
+
+        const model =
+          document.querySelector("#model" + i);
+
+        if (model) {
+          model.setAttribute(
+            "visible",
+            i === currentStep
+          );
+        }
+
+      }
+
+
+      /* Step counter */
+
+      stepCounter.textContent =
+        "Step " +
+        (currentStep + 1) +
+        " of " +
+        steps.length;
+
+
+      /* Progress bar */
+
+      const progress =
+        ((currentStep + 1) / steps.length) * 100;
+
+      progressBar.style.width =
+        progress + "%";
+
+      progressBar.style.backgroundColor =
+        colors[currentStep];
+
+
+      /* Button colour */
+
+      nextButton.style.backgroundColor =
+        colors[currentStep];
+
+
+      /* Back disabled on Step 1 */
+
+      backButton.disabled =
+        currentStep === 0;
+
+
+      /* Next disabled on Step 8 */
+
+      nextButton.disabled =
+        currentStep === steps.length - 1;
+
+
+      if (currentStep === steps.length - 1) {
+        nextButton.textContent = "Completed";
+      } else {
+        nextButton.textContent = "Next Step";
+      }
+
+    }
+
+
+    function nextStep() {
+
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        updateStep();
+      }
+
+    }
+
+
+    function previousStep() {
+
+      if (currentStep > 0) {
+        currentStep--;
+        updateStep();
+      }
+
+    }
+
+
+    nextButton.addEventListener(
+      "click",
+      nextStep
+    );
+
+
+    backButton.addEventListener(
+      "click",
+      previousStep
+    );
+
+
+    updateStep();
+
+  </script>
+
+</body>
+</html>
