@@ -11,8 +11,11 @@
   <title>WebAR CPR Training</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  
   <style>
     body {
       margin: 0;
@@ -233,10 +236,10 @@
         src="./models/hand.glb">
       </a-asset-item>
 
-      <a-asset-item
-        id="asset5"
-        src="./models/heart.glb">
-      </a-asset-item>
+<a-asset-item
+  id="asset5"
+  src="./models/cpr_step6_final.glb">
+</a-asset-item>
 
       <a-asset-item
         id="asset6"
@@ -332,15 +335,16 @@
       </a-entity>
 
 
-      <!-- Step 6 -->
-      <a-entity
-        id="model5"
-        gltf-model="#asset5"
-        position="0 0 0.18"
-        rotation="0 0 0"
-        scale="0.35 0.35 0.35"
-        visible="false">
-      </a-entity>
+     <!-- Step 6 -->
+<a-entity
+  id="model5"
+  gltf-model="#asset5"
+  position="0 0 0.18"
+  rotation="0 0 0"
+  scale="0.35 0.35 0.35"
+  animation-mixer="loop: repeat"
+  visible="false">
+</a-entity>
 
 
       <!-- Step 7 -->
