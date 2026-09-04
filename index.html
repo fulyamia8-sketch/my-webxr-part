@@ -13,7 +13,7 @@
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
   <style>
@@ -166,6 +166,11 @@
 </head>
 
 <body>
+  <div id="phoneAnimation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:260px; height:260px; z-index:1500;">
+</div>
 
   <!-- Initial marker scanning message -->
   <div id="startMessage">
@@ -454,6 +459,14 @@
 
     let currentStep = 0;
     let trainingStarted = false;
+    
+    const phoneAnimation = lottie.loadAnimation({
+  container: document.getElementById("phoneAnimation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./phone_animation.json"
+});
 
 
     const markerTarget =
@@ -538,12 +551,21 @@
 
           model.setAttribute(
             "visible",
-            i === currentStep
+            i === currentStep && i !== 1
           );
 
         }
 
       }
+
+      /* STEP 2 PHONE ANIMATION */
+const phoneAnimationBox = document.getElementById("phoneAnimation");
+
+if (currentStep === 1) {
+  phoneAnimationBox.style.display = "block";
+} else {
+  phoneAnimationBox.style.display = "none";
+}
 
 
       /* Progress */
