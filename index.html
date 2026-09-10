@@ -87,7 +87,7 @@
       height: 100%;
       width: 12.5%;
 
-      background: #1565C0;
+      background: #6EC6FF;
       border-radius: 10px;
 
       transition: width 0.3s ease;
@@ -152,11 +152,11 @@
     }
 
     #backButton {
-      background: #555555;
+      background: #6EC6FF;
     }
 
     #nextButton {
-      background: #1565C0;
+      background: #6EC6FF;
     }
 
     .navButton:disabled {
@@ -489,18 +489,6 @@ scale="0.18 0.18 0.18"
     ];
 
 
-    const colors = [
-      "#1565C0",
-      "#EF6C00",
-      "#455A64",
-      "#00ACC1",
-      "#D32F2F",
-      "#7B1FA2",
-      "#F9A825",
-      "#2E7D32"
-    ];
-
-
     let currentStep = 0;
     let trainingStarted = false;
     
@@ -714,12 +702,8 @@ step7AnimationBox.style.display =
         progress + "%";
 
 
-      progressBar.style.backgroundColor =
-        colors[currentStep];
-
-
-      nextButton.style.backgroundColor =
-        colors[currentStep];
+     progressBar.style.backgroundColor = "#6EC6FF";
+nextButton.style.backgroundColor = "#6EC6FF";
 
 
       /* Navigation limits */
