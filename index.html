@@ -177,6 +177,12 @@
             transform:translate(-50%,-50%);
             width:320px; height:320px; z-index:1500;">
 </div>
+
+  <div id="step8Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
   
   <!-- Initial marker scanning message -->
   <div id="startMessage">
@@ -490,6 +496,14 @@
   path: "./cat_emoji.json"
 });
 
+    const step8Animation = lottie.loadAnimation({
+  container: document.getElementById("step8Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./Ambulance.json"
+});
+
     const markerTarget =
       document.querySelector("#markerTarget");
 
@@ -572,13 +586,22 @@
 
           model.setAttribute(
             "visible",
-           i === currentStep && i !== 0 && i !== 1
+          i === currentStep && i !== 0 && i !== 1 && i !== 7
           );
 
         }
 
       }
 
+/* STEP 8 ANIMATION */
+const step8AnimationBox = document.getElementById("step8Animation");
+
+if (currentStep === 7) {
+  step8AnimationBox.style.display = "block";
+} else {
+  step8AnimationBox.style.display = "none";
+}
+      
 /* STEP 1 ANIMATION */
 const step1AnimationBox = document.getElementById("step1Animation");
 
