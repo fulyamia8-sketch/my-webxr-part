@@ -172,6 +172,12 @@
             width:260px; height:260px; z-index:1500;">
 </div>
 
+  <div id="step1Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
+  
   <!-- Initial marker scanning message -->
   <div id="startMessage">
     Scan the CPR marker to begin the training.
@@ -476,6 +482,13 @@
   path: "./phone_animation.json"
 });
 
+    const step1Animation = lottie.loadAnimation({
+  container: document.getElementById("step1Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./cat_emoji.json"
+});
 
     const markerTarget =
       document.querySelector("#markerTarget");
@@ -559,13 +572,22 @@
 
           model.setAttribute(
             "visible",
-            i === currentStep && i !== 1
+           i === currentStep && i !== 0 && i !== 1
           );
 
         }
 
       }
 
+/* STEP 1 ANIMATION */
+const step1AnimationBox = document.getElementById("step1Animation");
+
+if (currentStep === 0) {
+  step1AnimationBox.style.display = "block";
+} else {
+  step1AnimationBox.style.display = "none";
+}
+      
       /* STEP 2 PHONE ANIMATION */
 const phoneAnimationBox = document.getElementById("phoneAnimation");
 
