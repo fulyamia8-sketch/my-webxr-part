@@ -183,6 +183,30 @@
             transform:translate(-50%,-50%);
             width:320px; height:320px; z-index:1500;">
 </div>
+
+  <div id="step3Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
+
+<div id="step4Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
+
+<div id="step5Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
+
+<div id="step7Animation"
+     style="display:none; position:fixed; left:50%; top:55%;
+            transform:translate(-50%,-50%);
+            width:320px; height:320px; z-index:1500;">
+</div>
   
   <!-- Initial marker scanning message -->
   <div id="startMessage">
@@ -504,6 +528,38 @@
   path: "./Ambulance.json"
 });
 
+    const step3Animation = lottie.loadAnimation({
+  container: document.getElementById("step3Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./yes_bru.json"
+});
+
+const step4Animation = lottie.loadAnimation({
+  container: document.getElementById("step4Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./Lungs.json"
+});
+
+const step5Animation = lottie.loadAnimation({
+  container: document.getElementById("step5Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./waving_hand.json"
+});
+
+const step7Animation = lottie.loadAnimation({
+  container: document.getElementById("step7Animation"),
+  renderer: "svg",
+  loop: true,
+  autoplay: true,
+  path: "./beat_pulse.json"
+});
+
     const markerTarget =
       document.querySelector("#markerTarget");
 
@@ -586,7 +642,7 @@
 
           model.setAttribute(
             "visible",
-          i === currentStep && i !== 0 && i !== 1 && i !== 7
+         i === currentStep && i === 5
           );
 
         }
@@ -619,6 +675,26 @@ if (currentStep === 1) {
 } else {
   phoneAnimationBox.style.display = "none";
 }
+
+      /* STEP 3 ANIMATION */
+const step3AnimationBox = document.getElementById("step3Animation");
+step3AnimationBox.style.display =
+  currentStep === 2 ? "block" : "none";
+
+/* STEP 4 ANIMATION */
+const step4AnimationBox = document.getElementById("step4Animation");
+step4AnimationBox.style.display =
+  currentStep === 3 ? "block" : "none";
+
+/* STEP 5 ANIMATION */
+const step5AnimationBox = document.getElementById("step5Animation");
+step5AnimationBox.style.display =
+  currentStep === 4 ? "block" : "none";
+
+/* STEP 7 ANIMATION */
+const step7AnimationBox = document.getElementById("step7Animation");
+step7AnimationBox.style.display =
+  currentStep === 6 ? "block" : "none";
 
 
       /* Progress */
