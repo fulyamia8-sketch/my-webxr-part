@@ -11,11 +11,9 @@
   <title>WebAR CPR Training</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  
   <style>
     body {
       margin: 0;
@@ -152,7 +150,7 @@
     }
 
     #backButton {
-      background: #6EC6FF;
+      background: #555555;
     }
 
     #nextButton {
@@ -166,48 +164,7 @@
 </head>
 
 <body>
-  <div id="phoneAnimation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:260px; height:260px; z-index:1500;">
-</div>
 
-  <div id="step1Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-
-  <div id="step8Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-
-  <div id="step3Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-
-<div id="step4Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-
-<div id="step5Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-
-<div id="step7Animation"
-     style="display:none; position:fixed; left:50%; top:55%;
-            transform:translate(-50%,-50%);
-            width:320px; height:320px; z-index:1500;">
-</div>
-  
   <!-- Initial marker scanning message -->
   <div id="startMessage">
     Scan the CPR marker to begin the training.
@@ -252,44 +209,52 @@
 
     <a-assets timeout="60000">
 
+      <!-- STEP 1 -->
       <a-asset-item
         id="asset0"
-        src="./models/patient.glb">
+        src="./models/patient_1.glb">
       </a-asset-item>
 
+      <!-- STEP 2 -->
       <a-asset-item
         id="asset1"
-        src="./models/smartphone.glb">
+        src="./models/phone_2.glb">
       </a-asset-item>
 
+      <!-- STEP 3 -->
       <a-asset-item
         id="asset2"
-        src="./models/head.glb">
+        src="./models/head_3.glb">
       </a-asset-item>
 
+      <!-- STEP 4 -->
       <a-asset-item
         id="asset3"
-        src="./models/lungs.glb">
+        src="./models/lungs_4.glb">
       </a-asset-item>
 
+      <!-- STEP 5 -->
       <a-asset-item
         id="asset4"
-        src="./models/hand.glb">
+        src="./models/hands_5.glb">
       </a-asset-item>
 
-<a-asset-item
-  id="asset5"
-  src="./models/administering_cpr.glb">
-</a-asset-item>
+      <!-- STEP 6 -->
+      <a-asset-item
+        id="asset5"
+        src="./models/administering_cpr.glb">
+      </a-asset-item>
 
+      <!-- STEP 7 -->
       <a-asset-item
         id="asset6"
-        src="./models/alarm_clock.glb">
+        src="./models/heart_7.glb">
       </a-asset-item>
 
+      <!-- STEP 8 -->
       <a-asset-item
         id="asset7"
-        src="./models/ambulance.glb">
+        src="./models/ambulance_8.glb">
       </a-asset-item>
 
     </a-assets>
@@ -322,102 +287,128 @@
     >
 
       <a-entity
-  id="modelContainer"
-  position="-0.50 0 0.20"
-  scale="1.5 1.5 1.5">
-        
-      <!-- Step 1 -->
-      <a-entity
-        id="model0"
-        gltf-model="#asset0"
-        position="0 0 0.18"
-        rotation="0 0 0"
-        scale="0.35 0.35 0.35"
-        visible="true">
-      </a-entity>
-
-
-      <!-- Step 2 -->
-      <a-entity
-        id="model1"
-        gltf-model="#asset1"
-        position="0 0 0.18"
-        rotation="0 0 0"
-        scale="0.08 0.08 0.08"
-        visible="false">
-      </a-entity>
-
-
-      <!-- Step 3 -->
-      <a-entity
-        id="model2"
-        gltf-model="#asset2"
-        position="0 -0.10 0.40"
-        rotation="0 0 0"
+        id="modelContainer"
+        position="-0.50 0 0.20"
         scale="1.5 1.5 1.5"
-        visible="false">
+      >
+
+
+        <!-- STEP 1 - Patient -->
+        <a-entity
+          id="model0"
+          gltf-model="#asset0"
+          position="0 0 0.18"
+          rotation="0 0 0"
+          scale="0.35 0.35 0.35"
+          visible="true">
+        </a-entity>
+
+
+        <!-- STEP 2 - Phone -->
+        <a-entity
+          id="model1"
+          gltf-model="#asset1"
+          position="0 0 0.18"
+          rotation="0 0 0"
+          scale="0.20 0.20 0.20"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 3 - Head tilt / lift -->
+        <a-entity
+          id="model2"
+          gltf-model="#asset2"
+          position="0 -0.10 0.30"
+          rotation="0 0 0"
+          scale="0.40 0.40 0.40"
+          animation__headtilt="
+            property: rotation;
+            from: 0 0 0;
+            to: -25 0 0;
+            dur: 1500;
+            dir: alternate;
+            loop: true;
+            easing: easeInOutSine"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 4 - Breathing lungs -->
+        <a-entity
+          id="model3"
+          gltf-model="#asset3"
+          position="0 0 0.18"
+          rotation="0 0 0"
+          scale="0.35 0.35 0.35"
+          animation__breathing="
+            property: scale;
+            from: 0.35 0.35 0.35;
+            to: 0.42 0.42 0.42;
+            dur: 1800;
+            dir: alternate;
+            loop: true;
+            easing: easeInOutSine"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 5 - Hands -->
+        <a-entity
+          id="model4"
+          gltf-model="#asset4"
+          position="0 -0.10 0.18"
+          rotation="0 0 0"
+          scale="0.35 0.35 0.35"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 6 - CPR animation -->
+        <a-entity
+          id="model5"
+          gltf-model="#asset5"
+          position="0.08 -0.08 0.18"
+          rotation="0 0 0"
+          scale="0.18 0.18 0.18"
+          animation-mixer="loop: repeat"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 7 - Heart rhythm -->
+        <a-entity
+          id="model6"
+          gltf-model="#asset6"
+          position="0 0 0.18"
+          rotation="0 0 0"
+          scale="0.35 0.35 0.35"
+          animation__heartbeat="
+            property: scale;
+            from: 0.35 0.35 0.35;
+            to: 0.43 0.43 0.43;
+            dur: 500;
+            dir: alternate;
+            loop: true;
+            easing: easeInOutSine"
+          visible="false">
+        </a-entity>
+
+
+        <!-- STEP 8 - Ambulance -->
+        <a-entity
+          id="model7"
+          gltf-model="#asset7"
+          position="-0.15 0 0.18"
+          rotation="0 0 0"
+          scale="0.35 0.35 0.35"
+          visible="false">
+        </a-entity>
+
+
       </a-entity>
 
-
-      <!-- Step 4 -->
-      <a-entity
-        id="model3"
-        gltf-model="#asset3"
-        position="-0.15 0 0.18"
-        rotation="0 0 0"
-        scale="0.35 0.35 0.35"
-        visible="false">
-      </a-entity>
-
-
-      <!-- Step 5 -->
-      <a-entity
-        id="model4"
-        gltf-model="#asset4"
-        position="0 -0.15 0.18"
-        rotation="0 0 0"
-        scale="0.35 0.35 0.35"
-        visible="false">
-      </a-entity>
-
-
-     <!-- Step 6 -->
-<a-entity
-  id="model5"
-  gltf-model="#asset5"
-  position="0.08 -0.08 0.18"
-rotation="0 0 0"
-scale="0.18 0.18 0.18"
-  animation-mixer="loop: repeat"
-  visible="false">
-</a-entity>
-
-
-      <!-- Step 7 -->
-      <a-entity
-        id="model6"
-        gltf-model="#asset6"
-        position="0 0 0.18"
-        rotation="0 0 0"
-        scale="1.2 1.2 1.2"
-        visible="false">
-      </a-entity>
-
-
-      <!-- Step 8 -->
-      <a-entity
-        id="model7"
-        gltf-model="#asset7"
-        position="-0.15 0 0.18"
-        rotation="0 0 0"
-        scale="0.35 0.35 0.35"
-        visible="false">
-        
-           </a-entity>  <!-- Step 8 -->
-
-    </a-entity>    <!-- modelContainer -->
-
-  </a-entity>      <!-- markerTarget -->
+    </a-entity>
 
   </a-scene>
 
@@ -491,62 +482,7 @@ scale="0.18 0.18 0.18"
 
     let currentStep = 0;
     let trainingStarted = false;
-    
-    const phoneAnimation = lottie.loadAnimation({
-  container: document.getElementById("phoneAnimation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./phone_animation.json"
-});
 
-    const step1Animation = lottie.loadAnimation({
-  container: document.getElementById("step1Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./cat_emoji.json"
-});
-
-    const step8Animation = lottie.loadAnimation({
-  container: document.getElementById("step8Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./Ambulance.json"
-});
-
-    const step3Animation = lottie.loadAnimation({
-  container: document.getElementById("step3Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./yes_bru.json"
-});
-
-const step4Animation = lottie.loadAnimation({
-  container: document.getElementById("step4Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./Lungs.json"
-});
-
-const step5Animation = lottie.loadAnimation({
-  container: document.getElementById("step5Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./waving_hand.json"
-});
-
-const step7Animation = lottie.loadAnimation({
-  container: document.getElementById("step7Animation"),
-  renderer: "svg",
-  loop: true,
-  autoplay: true,
-  path: "./beat_pulse.json"
-});
 
     const markerTarget =
       document.querySelector("#markerTarget");
@@ -619,7 +555,7 @@ const step7Animation = lottie.loadAnimation({
         steps[currentStep].text;
 
 
-      /* Current 3D model */
+      /* Show only current GLB model */
 
       for (let i = 0; i < steps.length; i++) {
 
@@ -630,59 +566,12 @@ const step7Animation = lottie.loadAnimation({
 
           model.setAttribute(
             "visible",
-         i === currentStep && i === 5
+            i === currentStep
           );
 
         }
 
       }
-
-/* STEP 8 ANIMATION */
-const step8AnimationBox = document.getElementById("step8Animation");
-
-if (currentStep === 7) {
-  step8AnimationBox.style.display = "block";
-} else {
-  step8AnimationBox.style.display = "none";
-}
-      
-/* STEP 1 ANIMATION */
-const step1AnimationBox = document.getElementById("step1Animation");
-
-if (currentStep === 0) {
-  step1AnimationBox.style.display = "block";
-} else {
-  step1AnimationBox.style.display = "none";
-}
-      
-      /* STEP 2 PHONE ANIMATION */
-const phoneAnimationBox = document.getElementById("phoneAnimation");
-
-if (currentStep === 1) {
-  phoneAnimationBox.style.display = "block";
-} else {
-  phoneAnimationBox.style.display = "none";
-}
-
-      /* STEP 3 ANIMATION */
-const step3AnimationBox = document.getElementById("step3Animation");
-step3AnimationBox.style.display =
-  currentStep === 2 ? "block" : "none";
-
-/* STEP 4 ANIMATION */
-const step4AnimationBox = document.getElementById("step4Animation");
-step4AnimationBox.style.display =
-  currentStep === 3 ? "block" : "none";
-
-/* STEP 5 ANIMATION */
-const step5AnimationBox = document.getElementById("step5Animation");
-step5AnimationBox.style.display =
-  currentStep === 4 ? "block" : "none";
-
-/* STEP 7 ANIMATION */
-const step7AnimationBox = document.getElementById("step7Animation");
-step7AnimationBox.style.display =
-  currentStep === 6 ? "block" : "none";
 
 
       /* Progress */
@@ -702,8 +591,13 @@ step7AnimationBox.style.display =
         progress + "%";
 
 
-     progressBar.style.backgroundColor = "#6EC6FF";
-nextButton.style.backgroundColor = "#6EC6FF";
+      /* Fixed light blue color */
+
+      progressBar.style.backgroundColor =
+        "#6EC6FF";
+
+      nextButton.style.backgroundColor =
+        "#6EC6FF";
 
 
       /* Navigation limits */
