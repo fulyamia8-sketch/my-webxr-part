@@ -142,7 +142,9 @@
     Scan the CPR marker to begin the training.
   </div>
 
+
   <div id="progressContainer">
+
     <div id="stepCounter">
       Step 1 of 8
     </div>
@@ -150,9 +152,12 @@
     <div id="progressBackground">
       <div id="progressBar"></div>
     </div>
+
   </div>
 
+
   <div id="instructionPanel">
+
     <div id="stepTitle">
       STEP 1
     </div>
@@ -160,11 +165,19 @@
     <div id="stepDescription">
       Check responsiveness.
     </div>
+
   </div>
 
 
+  <!-- AR SCENE -->
   <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind;"
+    mindar-image="
+      imageTargetSrc: ./targets.mind;
+      filterMinCF: 0.0001;
+      filterBeta: 0.001;
+      warmupTolerance: 5;
+      missTolerance: 10;
+    "
     color-space="sRGB"
     renderer="colorManagement: true; physicallyCorrectLights: true;"
     vr-mode-ui="enabled: false"
@@ -216,6 +229,7 @@
     </a-assets>
 
 
+    <!-- LIGHTS -->
     <a-light
       type="ambient"
       color="#ffffff"
@@ -230,12 +244,14 @@
     </a-light>
 
 
+    <!-- CAMERA -->
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
 
+    <!-- MARKER -->
     <a-entity
       id="markerTarget"
       mindar-image-target="targetIndex: 0"
@@ -259,7 +275,7 @@
         </a-entity>
 
 
-        <!-- STEP 2 - MUCH MORE LEFT -->
+        <!-- STEP 2 -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
@@ -291,7 +307,7 @@
         </a-entity>
 
 
-        <!-- STEP 4 - MUCH SMALLER + MUCH MORE LEFT -->
+        <!-- STEP 4 -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
@@ -312,7 +328,7 @@
         </a-entity>
 
 
-        <!-- STEP 5 - SLIGHTLY SMALLER -->
+        <!-- STEP 5 -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
@@ -323,7 +339,7 @@
         </a-entity>
 
 
-        <!-- STEP 6 - LOWER -->
+        <!-- STEP 6 -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
@@ -374,6 +390,7 @@
   </a-scene>
 
 
+  <!-- BUTTONS -->
   <div id="buttonContainer">
 
     <button
@@ -510,6 +527,8 @@
         steps[currentStep].text;
 
 
+      /* SHOW ONLY CURRENT MODEL */
+
       for (let i = 0; i < steps.length; i++) {
 
         const model =
@@ -527,6 +546,8 @@
       }
 
 
+      /* PROGRESS */
+
       stepCounter.textContent =
         "Step " +
         (currentStep + 1) +
@@ -541,12 +562,17 @@
       progressBar.style.width =
         progress + "%";
 
+
+      /* FIXED LIGHT BLUE */
+
       progressBar.style.backgroundColor =
         "#6EC6FF";
 
       nextButton.style.backgroundColor =
         "#6EC6FF";
 
+
+      /* BUTTON STATES */
 
       backButton.disabled =
         currentStep === 0;
