@@ -27,17 +27,13 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 2000;
-
       width: 80%;
       max-width: 420px;
       box-sizing: border-box;
-
       background: rgba(0, 0, 0, 0.78);
       color: white;
-
       padding: 20px;
       border-radius: 14px;
-
       text-align: center;
       font-size: 19px;
       line-height: 1.4;
@@ -45,21 +41,16 @@
 
     #progressContainer {
       display: none;
-
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-
       width: 82%;
       max-width: 500px;
-
       z-index: 1000;
-
       background: rgba(0, 0, 0, 0.60);
       padding: 10px 14px;
       border-radius: 12px;
-
       box-sizing: border-box;
     }
 
@@ -74,46 +65,35 @@
     #progressBackground {
       width: 100%;
       height: 9px;
-
       background: rgba(255, 255, 255, 0.30);
       border-radius: 10px;
-
       overflow: hidden;
     }
 
     #progressBar {
       height: 100%;
       width: 12.5%;
-
       background: #6EC6FF;
       border-radius: 10px;
-
       transition: width 0.3s ease;
     }
 
     #instructionPanel {
       display: none;
-
       position: fixed;
       top: 105px;
       left: 50%;
       transform: translateX(-50%);
-
       width: 82%;
       max-width: 520px;
-
       z-index: 1000;
-
       background: rgba(0, 0, 0, 0.72);
       color: white;
-
       padding: 12px 15px;
       border-radius: 12px;
-
       text-align: center;
       font-size: 18px;
       line-height: 1.4;
-
       box-sizing: border-box;
     }
 
@@ -124,28 +104,21 @@
 
     #buttonContainer {
       display: none;
-
       position: fixed;
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-
       z-index: 1000;
-
       gap: 15px;
     }
 
     .navButton {
       padding: 14px 22px;
-
       border: none;
       border-radius: 10px;
-
       color: white;
-
       font-size: 17px;
       font-weight: 600;
-
       min-width: 125px;
     }
 
@@ -165,13 +138,13 @@
 
 <body>
 
-  <!-- Initial marker scanning message -->
+  <!-- START MESSAGE -->
   <div id="startMessage">
     Scan the CPR marker to begin the training.
   </div>
 
 
-  <!-- Progress -->
+  <!-- PROGRESS -->
   <div id="progressContainer">
 
     <div id="stepCounter">
@@ -185,7 +158,7 @@
   </div>
 
 
-  <!-- CPR instructions -->
+  <!-- INSTRUCTIONS -->
   <div id="instructionPanel">
 
     <div id="stepTitle">
@@ -199,6 +172,7 @@
   </div>
 
 
+  <!-- AR SCENE -->
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind;"
     color-space="sRGB"
@@ -260,6 +234,7 @@
     </a-assets>
 
 
+    <!-- LIGHTS -->
     <a-light
       type="ambient"
       color="#ffffff"
@@ -274,13 +249,14 @@
     </a-light>
 
 
+    <!-- CAMERA -->
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
 
-    <!-- Marker target -->
+    <!-- MARKER -->
     <a-entity
       id="markerTarget"
       mindar-image-target="targetIndex: 0"
@@ -293,35 +269,38 @@
       >
 
 
-        <!-- STEP 1 - Patient / much smaller -->
+        <!-- STEP 1
+             VERY SMALL -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
           position="0 0 0.18"
           rotation="0 0 0"
-          scale="0.10 0.10 0.10"
+          scale="0.025 0.025 0.025"
           visible="true">
         </a-entity>
 
 
-        <!-- STEP 2 - Phone / much bigger -->
+        <!-- STEP 2
+             MUCH BIGGER + LEFT -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
-          position="0 0 0.18"
+          position="-0.25 0 0.18"
           rotation="0 0 0"
-          scale="0.65 0.65 0.65"
+          scale="1.30 1.30 1.30"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 3 - Head / bigger + tilt -->
+        <!-- STEP 3
+             MUCH BIGGER + LEFT + HEAD TILT -->
         <a-entity
           id="model2"
           gltf-model="#asset2"
-          position="0 -0.10 0.30"
+          position="-0.25 -0.10 0.30"
           rotation="0 0 0"
-          scale="0.55 0.55 0.55"
+          scale="1.10 1.10 1.10"
 
           animation__headtilt="
             property: rotation;
@@ -336,11 +315,12 @@
         </a-entity>
 
 
-        <!-- STEP 4 - Lungs / moved left -->
+        <!-- STEP 4
+             LUNGS - MORE LEFT + BREATHING -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
-          position="-0.15 0 0.18"
+          position="-0.40 0 0.18"
           rotation="0 0 0"
           scale="0.35 0.35 0.35"
 
@@ -357,22 +337,24 @@
         </a-entity>
 
 
-        <!-- STEP 5 - Hands / moved left -->
+        <!-- STEP 5
+             HANDS - BIGGER + MORE LEFT -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
-          position="-0.12 -0.10 0.18"
+          position="-0.35 -0.10 0.18"
           rotation="0 0 0"
-          scale="0.35 0.35 0.35"
+          scale="0.45 0.45 0.45"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 6 - CPR / moved left -->
+        <!-- STEP 6
+             CPR - MORE LEFT -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
-          position="-0.05 -0.08 0.18"
+          position="-0.25 -0.08 0.18"
           rotation="0 0 0"
           scale="0.18 0.18 0.18"
           animation-mixer="loop: repeat"
@@ -380,11 +362,12 @@
         </a-entity>
 
 
-        <!-- STEP 7 - Heart / moved left + down -->
+        <!-- STEP 7
+             HEART - MUCH MORE LEFT + LOWER -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
-          position="-0.15 -0.12 0.18"
+          position="-0.40 -0.45 0.18"
           rotation="0 0 0"
           scale="0.35 0.35 0.35"
 
@@ -401,7 +384,8 @@
         </a-entity>
 
 
-        <!-- STEP 8 - Ambulance / moved left -->
+        <!-- STEP 8
+             AMBULANCE -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -419,7 +403,7 @@
   </a-scene>
 
 
-  <!-- Navigation -->
+  <!-- NAVIGATION -->
   <div id="buttonContainer">
 
     <button
@@ -533,11 +517,8 @@
       trainingStarted = true;
 
       startMessage.style.display = "none";
-
       progressContainer.style.display = "block";
-
       instructionPanel.style.display = "block";
-
       buttonContainer.style.display = "flex";
 
       updateStep();
@@ -552,7 +533,7 @@
 
     function updateStep() {
 
-      /* Instructions */
+      /* INSTRUCTIONS */
 
       stepTitle.textContent =
         steps[currentStep].title;
@@ -561,7 +542,7 @@
         steps[currentStep].text;
 
 
-      /* Show only current GLB */
+      /* SHOW ONLY CURRENT MODEL */
 
       for (let i = 0; i < steps.length; i++) {
 
@@ -580,7 +561,7 @@
       }
 
 
-      /* Progress */
+      /* PROGRESS */
 
       stepCounter.textContent =
         "Step " +
@@ -597,7 +578,7 @@
         progress + "%";
 
 
-      /* Fixed light blue */
+      /* FIXED LIGHT BLUE */
 
       progressBar.style.backgroundColor =
         "#6EC6FF";
@@ -606,11 +587,10 @@
         "#6EC6FF";
 
 
-      /* Navigation limits */
+      /* NAVIGATION LIMITS */
 
       backButton.disabled =
         currentStep === 0;
-
 
       nextButton.disabled =
         currentStep === steps.length - 1;
