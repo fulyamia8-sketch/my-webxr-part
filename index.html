@@ -27,17 +27,13 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 2000;
-
       width: 80%;
       max-width: 420px;
       box-sizing: border-box;
-
       background: rgba(0, 0, 0, 0.78);
       color: white;
-
       padding: 20px;
       border-radius: 14px;
-
       text-align: center;
       font-size: 19px;
       line-height: 1.4;
@@ -45,21 +41,16 @@
 
     #progressContainer {
       display: none;
-
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-
       width: 82%;
       max-width: 500px;
-
       z-index: 1000;
-
       background: rgba(0, 0, 0, 0.60);
       padding: 10px 14px;
       border-radius: 12px;
-
       box-sizing: border-box;
     }
 
@@ -74,46 +65,35 @@
     #progressBackground {
       width: 100%;
       height: 9px;
-
       background: rgba(255, 255, 255, 0.30);
       border-radius: 10px;
-
       overflow: hidden;
     }
 
     #progressBar {
       height: 100%;
       width: 12.5%;
-
       background: #6EC6FF;
       border-radius: 10px;
-
       transition: width 0.3s ease;
     }
 
     #instructionPanel {
       display: none;
-
       position: fixed;
       top: 105px;
       left: 50%;
       transform: translateX(-50%);
-
       width: 82%;
       max-width: 520px;
-
       z-index: 1000;
-
       background: rgba(0, 0, 0, 0.72);
       color: white;
-
       padding: 12px 15px;
       border-radius: 12px;
-
       text-align: center;
       font-size: 18px;
       line-height: 1.4;
-
       box-sizing: border-box;
     }
 
@@ -124,28 +104,21 @@
 
     #buttonContainer {
       display: none;
-
       position: fixed;
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-
       z-index: 1000;
-
       gap: 15px;
     }
 
     .navButton {
       padding: 14px 22px;
-
       border: none;
       border-radius: 10px;
-
       color: white;
-
       font-size: 17px;
       font-weight: 600;
-
       min-width: 125px;
     }
 
@@ -210,49 +183,41 @@
 
     <a-assets timeout="60000">
 
-      <!-- STEP 1 -->
       <a-asset-item
         id="asset0"
         src="./models/patient_1.glb">
       </a-asset-item>
 
-      <!-- STEP 2 -->
       <a-asset-item
         id="asset1"
         src="./models/phone_2.glb">
       </a-asset-item>
 
-      <!-- STEP 3 -->
       <a-asset-item
         id="asset2"
         src="./models/head_3.glb">
       </a-asset-item>
 
-      <!-- STEP 4 -->
       <a-asset-item
         id="asset3"
         src="./models/lungs_4.glb">
       </a-asset-item>
 
-      <!-- STEP 5 -->
       <a-asset-item
         id="asset4"
         src="./models/hands_5.glb">
       </a-asset-item>
 
-      <!-- STEP 6 -->
       <a-asset-item
         id="asset5"
         src="./models/administering_cpr.glb">
       </a-asset-item>
 
-      <!-- STEP 7 -->
       <a-asset-item
         id="asset6"
         src="./models/heart_7.glb">
       </a-asset-item>
 
-      <!-- STEP 8 -->
       <a-asset-item
         id="asset7"
         src="./models/ambulance_8.glb">
@@ -296,33 +261,36 @@
       >
 
 
-        <!-- STEP 1 - TINY -->
+        <!-- STEP 1
+             SMALL + FAR LEFT -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
-          position="0 0 0.18"
+          position="-0.55 0 0.18"
           rotation="0 0 0"
           scale="0.006 0.006 0.006"
           visible="true">
         </a-entity>
 
 
-        <!-- STEP 2 - MUCH BIGGER + 90 DEG DOWN -->
+        <!-- STEP 2
+             PHONE FRONT FACING -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
           position="-0.25 0 0.18"
-          rotation="-90 0 0"
+          rotation="90 180 0"
           scale="3.00 3.00 3.00"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 3 - MUCH BIGGER + HEAD TILT -->
+        <!-- STEP 3
+             MORE LEFT -->
         <a-entity
           id="model2"
           gltf-model="#asset2"
-          position="-0.25 -0.10 0.30"
+          position="-0.45 -0.10 0.30"
           rotation="0 0 0"
           scale="2.50 2.50 2.50"
 
@@ -339,18 +307,19 @@
         </a-entity>
 
 
-        <!-- STEP 4 - MUCH BIGGER + BREATHING -->
+        <!-- STEP 4
+             SMALLER + FAR LEFT -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
-          position="-0.40 0 0.18"
+          position="-0.85 0 0.18"
           rotation="0 0 0"
-          scale="1.20 1.20 1.20"
+          scale="0.90 0.90 0.90"
 
           animation__breathing="
             property: scale;
-            from: 1.20 1.20 1.20;
-            to: 1.40 1.40 1.40;
+            from: 0.90 0.90 0.90;
+            to: 1.05 1.05 1.05;
             dur: 1800;
             dir: alternate;
             loop: true;
@@ -360,22 +329,24 @@
         </a-entity>
 
 
-        <!-- STEP 5 - MUCH BIGGER -->
+        <!-- STEP 5
+             SLIGHTLY SMALLER -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
           position="-0.35 -0.10 0.18"
           rotation="0 0 0"
-          scale="1.50 1.50 1.50"
+          scale="1.20 1.20 1.20"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 6 - MUCH BIGGER + CPR ANIMATION -->
+        <!-- STEP 6
+             FAR LEFT -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
-          position="-0.25 -0.08 0.18"
+          position="-0.80 -0.08 0.18"
           rotation="0 0 0"
           scale="0.50 0.50 0.50"
           animation-mixer="loop: repeat"
@@ -383,11 +354,12 @@
         </a-entity>
 
 
-        <!-- STEP 7 - MORE LEFT + LOWER -->
+        <!-- STEP 7
+             SLIGHTLY LOWER -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
-          position="-0.60 -0.45 0.18"
+          position="-0.60 -0.60 0.18"
           rotation="0 0 0"
           scale="0.35 0.35 0.35"
 
@@ -404,7 +376,8 @@
         </a-entity>
 
 
-        <!-- STEP 8 - MORE LEFT -->
+        <!-- STEP 8
+             UNCHANGED -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -552,16 +525,12 @@
 
     function updateStep() {
 
-      /* INSTRUCTIONS */
-
       stepTitle.textContent =
         steps[currentStep].title;
 
       stepDescription.textContent =
         steps[currentStep].text;
 
-
-      /* SHOW ONLY CURRENT MODEL */
 
       for (let i = 0; i < steps.length; i++) {
 
@@ -580,8 +549,6 @@
       }
 
 
-      /* PROGRESS */
-
       stepCounter.textContent =
         "Step " +
         (currentStep + 1) +
@@ -597,16 +564,12 @@
         progress + "%";
 
 
-      /* FIXED LIGHT BLUE */
-
       progressBar.style.backgroundColor =
         "#6EC6FF";
 
       nextButton.style.backgroundColor =
         "#6EC6FF";
 
-
-      /* NAVIGATION */
 
       backButton.disabled =
         currentStep === 0;
@@ -638,7 +601,6 @@
       ) {
 
         currentStep++;
-
         updateStep();
 
       }
@@ -654,7 +616,6 @@
       ) {
 
         currentStep--;
-
         updateStep();
 
       }
