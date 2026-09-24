@@ -138,15 +138,11 @@
 
 <body>
 
-  <!-- START MESSAGE -->
   <div id="startMessage">
     Scan the CPR marker to begin the training.
   </div>
 
-
-  <!-- PROGRESS -->
   <div id="progressContainer">
-
     <div id="stepCounter">
       Step 1 of 8
     </div>
@@ -154,13 +150,9 @@
     <div id="progressBackground">
       <div id="progressBar"></div>
     </div>
-
   </div>
 
-
-  <!-- INSTRUCTIONS -->
   <div id="instructionPanel">
-
     <div id="stepTitle">
       STEP 1
     </div>
@@ -168,11 +160,9 @@
     <div id="stepDescription">
       Check responsiveness.
     </div>
-
   </div>
 
 
-  <!-- AR SCENE -->
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind;"
     color-space="sRGB"
@@ -226,7 +216,6 @@
     </a-assets>
 
 
-    <!-- LIGHTS -->
     <a-light
       type="ambient"
       color="#ffffff"
@@ -241,14 +230,12 @@
     </a-light>
 
 
-    <!-- CAMERA -->
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
 
-    <!-- MARKER -->
     <a-entity
       id="markerTarget"
       mindar-image-target="targetIndex: 0"
@@ -261,8 +248,7 @@
       >
 
 
-        <!-- STEP 1
-             SMALL + FAR LEFT -->
+        <!-- STEP 1 -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
@@ -273,20 +259,18 @@
         </a-entity>
 
 
-        <!-- STEP 2
-             PHONE FRONT FACING -->
+        <!-- STEP 2 - MUCH MORE LEFT -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
-          position="-0.25 0 0.18"
+          position="-0.80 0 0.18"
           rotation="90 180 0"
           scale="3.00 3.00 3.00"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 3
-             MORE LEFT -->
+        <!-- STEP 3 -->
         <a-entity
           id="model2"
           gltf-model="#asset2"
@@ -307,19 +291,18 @@
         </a-entity>
 
 
-        <!-- STEP 4
-             SMALLER + FAR LEFT -->
+        <!-- STEP 4 - MUCH SMALLER + MUCH MORE LEFT -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
-          position="-0.85 0 0.18"
+          position="-1.15 0 0.18"
           rotation="0 0 0"
-          scale="0.90 0.90 0.90"
+          scale="0.45 0.45 0.45"
 
           animation__breathing="
             property: scale;
-            from: 0.90 0.90 0.90;
-            to: 1.05 1.05 1.05;
+            from: 0.45 0.45 0.45;
+            to: 0.53 0.53 0.53;
             dur: 1800;
             dir: alternate;
             loop: true;
@@ -329,24 +312,22 @@
         </a-entity>
 
 
-        <!-- STEP 5
-             SLIGHTLY SMALLER -->
+        <!-- STEP 5 - SLIGHTLY SMALLER -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
           position="-0.35 -0.10 0.18"
           rotation="0 0 0"
-          scale="1.20 1.20 1.20"
+          scale="1.00 1.00 1.00"
           visible="false">
         </a-entity>
 
 
-        <!-- STEP 6
-             FAR LEFT -->
+        <!-- STEP 6 - LOWER -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
-          position="-0.80 -0.08 0.18"
+          position="-0.80 -0.25 0.18"
           rotation="0 0 0"
           scale="0.50 0.50 0.50"
           animation-mixer="loop: repeat"
@@ -354,8 +335,7 @@
         </a-entity>
 
 
-        <!-- STEP 7
-             SLIGHTLY LOWER -->
+        <!-- STEP 7 -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
@@ -376,8 +356,7 @@
         </a-entity>
 
 
-        <!-- STEP 8
-             UNCHANGED -->
+        <!-- STEP 8 -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -395,7 +374,6 @@
   </a-scene>
 
 
-  <!-- NAVIGATION -->
   <div id="buttonContainer">
 
     <button
@@ -562,7 +540,6 @@
 
       progressBar.style.width =
         progress + "%";
-
 
       progressBar.style.backgroundColor =
         "#6EC6FF";
