@@ -142,9 +142,7 @@
     Scan the CPR marker to begin the training.
   </div>
 
-
   <div id="progressContainer">
-
     <div id="stepCounter">
       Step 1 of 8
     </div>
@@ -152,12 +150,9 @@
     <div id="progressBackground">
       <div id="progressBar"></div>
     </div>
-
   </div>
 
-
   <div id="instructionPanel">
-
     <div id="stepTitle">
       STEP 1
     </div>
@@ -165,11 +160,9 @@
     <div id="stepDescription">
       Check responsiveness.
     </div>
-
   </div>
 
 
-  <!-- AR SCENE -->
   <a-scene
     mindar-image="
       imageTargetSrc: ./targets.mind;
@@ -229,7 +222,6 @@
     </a-assets>
 
 
-    <!-- LIGHTS -->
     <a-light
       type="ambient"
       color="#ffffff"
@@ -244,14 +236,12 @@
     </a-light>
 
 
-    <!-- CAMERA -->
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
 
-    <!-- MARKER -->
     <a-entity
       id="markerTarget"
       mindar-image-target="targetIndex: 0"
@@ -275,13 +265,23 @@
         </a-entity>
 
 
-        <!-- STEP 2 -->
+        <!-- STEP 2 - PHONE RING ANIMATION -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
-          position="-0.80 0 0.18"
+          position="-0.60 0 0.18"
           rotation="90 180 0"
           scale="3.00 3.00 3.00"
+
+          animation__ring="
+            property: rotation;
+            from: 90 180 -12;
+            to: 90 180 12;
+            dur: 140;
+            dir: alternate;
+            loop: true;
+            easing: easeInOutSine"
+
           visible="false">
         </a-entity>
 
@@ -390,7 +390,6 @@
   </a-scene>
 
 
-  <!-- BUTTONS -->
   <div id="buttonContainer">
 
     <button
@@ -527,8 +526,6 @@
         steps[currentStep].text;
 
 
-      /* SHOW ONLY CURRENT MODEL */
-
       for (let i = 0; i < steps.length; i++) {
 
         const model =
@@ -546,8 +543,6 @@
       }
 
 
-      /* PROGRESS */
-
       stepCounter.textContent =
         "Step " +
         (currentStep + 1) +
@@ -563,16 +558,12 @@
         progress + "%";
 
 
-      /* FIXED LIGHT BLUE */
-
       progressBar.style.backgroundColor =
         "#6EC6FF";
 
       nextButton.style.backgroundColor =
         "#6EC6FF";
 
-
-      /* BUTTON STATES */
 
       backButton.disabled =
         currentStep === 0;
