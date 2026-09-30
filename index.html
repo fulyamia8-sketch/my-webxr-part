@@ -65,7 +65,7 @@
     #progressBackground {
       width: 100%;
       height: 9px;
-      background: rgba(255, 255, 255, 0.30);
+      background: rgba(255,255,255,0.30);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -87,7 +87,7 @@
       width: 82%;
       max-width: 520px;
       z-index: 1000;
-      background: rgba(0, 0, 0, 0.72);
+      background: rgba(0,0,0,0.72);
       color: white;
       padding: 12px 15px;
       border-radius: 12px;
@@ -143,9 +143,7 @@
   </div>
 
   <div id="progressContainer">
-    <div id="stepCounter">
-      Step 1 of 8
-    </div>
+    <div id="stepCounter">Step 1 of 8</div>
 
     <div id="progressBackground">
       <div id="progressBar"></div>
@@ -153,13 +151,8 @@
   </div>
 
   <div id="instructionPanel">
-    <div id="stepTitle">
-      STEP 1
-    </div>
-
-    <div id="stepDescription">
-      Check responsiveness.
-    </div>
+    <div id="stepTitle">STEP 1</div>
+    <div id="stepDescription">Check responsiveness.</div>
   </div>
 
 
@@ -179,9 +172,10 @@
 
     <a-assets timeout="60000">
 
+      <!-- STEP 1: NEW HAND -->
       <a-asset-item
         id="asset0"
-        src="./models/patient_1.glb">
+        src="./models/basic_hand.glb">
       </a-asset-item>
 
       <a-asset-item
@@ -254,18 +248,28 @@
       >
 
 
-        <!-- STEP 1 -->
+        <!-- STEP 1 - HAND ON SHOULDER -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
-          position="-0.55 0 0.18"
+          position="-1.75 1.55 0.18"
           rotation="0 0 0"
-          scale="0.006 0.006 0.006"
+          scale="0.50 0.50 0.50"
+
+          animation__tap="
+            property: position;
+            from: -1.75 1.55 0.18;
+            to: -1.75 1.42 0.18;
+            dur: 500;
+            dir: alternate;
+            loop: true;
+            easing: easeInOutSine"
+
           visible="true">
         </a-entity>
 
 
-        <!-- STEP 2 - PHONE RING ANIMATION -->
+        <!-- STEP 2 - PHONE RING -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
@@ -496,9 +500,7 @@
 
     function startTraining() {
 
-      if (trainingStarted) {
-        return;
-      }
+      if (trainingStarted) return;
 
       trainingStarted = true;
 
@@ -557,7 +559,6 @@
       progressBar.style.width =
         progress + "%";
 
-
       progressBar.style.backgroundColor =
         "#6EC6FF";
 
@@ -572,17 +573,10 @@
         currentStep === steps.length - 1;
 
 
-      if (currentStep === steps.length - 1) {
-
-        nextButton.textContent =
-          "Completed";
-
-      } else {
-
-        nextButton.textContent =
-          "Next Step";
-
-      }
+      nextButton.textContent =
+        currentStep === steps.length - 1
+          ? "Completed"
+          : "Next Step";
 
     }
 
@@ -621,7 +615,6 @@
       "click",
       nextStep
     );
-
 
     backButton.addEventListener(
       "click",
