@@ -65,7 +65,7 @@
     #progressBackground {
       width: 100%;
       height: 9px;
-      background: rgba(255,255,255,0.30);
+      background: rgba(255, 255, 255, 0.30);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -87,7 +87,7 @@
       width: 82%;
       max-width: 520px;
       z-index: 1000;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0, 0, 0, 0.72);
       color: white;
       padding: 12px 15px;
       border-radius: 12px;
@@ -143,7 +143,9 @@
   </div>
 
   <div id="progressContainer">
-    <div id="stepCounter">Step 1 of 8</div>
+    <div id="stepCounter">
+      Step 1 of 8
+    </div>
 
     <div id="progressBackground">
       <div id="progressBar"></div>
@@ -151,8 +153,13 @@
   </div>
 
   <div id="instructionPanel">
-    <div id="stepTitle">STEP 1</div>
-    <div id="stepDescription">Check responsiveness.</div>
+    <div id="stepTitle">
+      STEP 1
+    </div>
+
+    <div id="stepDescription">
+      Check responsiveness.
+    </div>
   </div>
 
 
@@ -172,42 +179,49 @@
 
     <a-assets timeout="60000">
 
-      <!-- STEP 1: NEW HAND -->
+      <!-- STEP 1 -->
       <a-asset-item
         id="asset0"
         src="./models/basic_hand.glb">
       </a-asset-item>
 
+      <!-- STEP 2 -->
       <a-asset-item
         id="asset1"
         src="./models/phone_2.glb">
       </a-asset-item>
 
+      <!-- STEP 3 -->
       <a-asset-item
         id="asset2"
         src="./models/head_3.glb">
       </a-asset-item>
 
+      <!-- STEP 4 -->
       <a-asset-item
         id="asset3"
         src="./models/lungs_4.glb">
       </a-asset-item>
 
+      <!-- STEP 5 -->
       <a-asset-item
         id="asset4"
         src="./models/hands_5.glb">
       </a-asset-item>
 
+      <!-- STEP 6 -->
       <a-asset-item
         id="asset5"
         src="./models/administering_cpr.glb">
       </a-asset-item>
 
+      <!-- STEP 7 -->
       <a-asset-item
         id="asset6"
         src="./models/heart_7.glb">
       </a-asset-item>
 
+      <!-- STEP 8 -->
       <a-asset-item
         id="asset7"
         src="./models/ambulance_8.glb">
@@ -215,6 +229,8 @@
 
     </a-assets>
 
+
+    <!-- LIGHTS -->
 
     <a-light
       type="ambient"
@@ -230,11 +246,15 @@
     </a-light>
 
 
+    <!-- CAMERA -->
+
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
+
+    <!-- MARKER -->
 
     <a-entity
       id="markerTarget"
@@ -248,28 +268,20 @@
       >
 
 
-        <!-- STEP 1 - HAND ON SHOULDER -->
+        <!-- STEP 1 - BASIC HAND TEST POSITION -->
+
         <a-entity
           id="model0"
           gltf-model="#asset0"
-          position="-1.75 1.55 0.18"
+          position="-0.60 0 0.30"
           rotation="0 0 0"
-          scale="0.50 0.50 0.50"
-
-          animation__tap="
-            property: position;
-            from: -1.75 1.55 0.18;
-            to: -1.75 1.42 0.18;
-            dur: 500;
-            dir: alternate;
-            loop: true;
-            easing: easeInOutSine"
-
+          scale="1 1 1"
           visible="true">
         </a-entity>
 
 
         <!-- STEP 2 - PHONE RING -->
+
         <a-entity
           id="model1"
           gltf-model="#asset1"
@@ -291,6 +303,7 @@
 
 
         <!-- STEP 3 -->
+
         <a-entity
           id="model2"
           gltf-model="#asset2"
@@ -312,6 +325,7 @@
 
 
         <!-- STEP 4 -->
+
         <a-entity
           id="model3"
           gltf-model="#asset3"
@@ -333,6 +347,7 @@
 
 
         <!-- STEP 5 -->
+
         <a-entity
           id="model4"
           gltf-model="#asset4"
@@ -344,6 +359,7 @@
 
 
         <!-- STEP 6 -->
+
         <a-entity
           id="model5"
           gltf-model="#asset5"
@@ -356,6 +372,7 @@
 
 
         <!-- STEP 7 -->
+
         <a-entity
           id="model6"
           gltf-model="#asset6"
@@ -377,6 +394,7 @@
 
 
         <!-- STEP 8 -->
+
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -393,6 +411,8 @@
 
   </a-scene>
 
+
+  <!-- BUTTONS -->
 
   <div id="buttonContainer">
 
@@ -462,166 +482,3 @@
 
     let currentStep = 0;
     let trainingStarted = false;
-
-
-    const markerTarget =
-      document.querySelector("#markerTarget");
-
-    const startMessage =
-      document.querySelector("#startMessage");
-
-    const progressContainer =
-      document.querySelector("#progressContainer");
-
-    const instructionPanel =
-      document.querySelector("#instructionPanel");
-
-    const buttonContainer =
-      document.querySelector("#buttonContainer");
-
-    const stepTitle =
-      document.querySelector("#stepTitle");
-
-    const stepDescription =
-      document.querySelector("#stepDescription");
-
-    const stepCounter =
-      document.querySelector("#stepCounter");
-
-    const progressBar =
-      document.querySelector("#progressBar");
-
-    const backButton =
-      document.querySelector("#backButton");
-
-    const nextButton =
-      document.querySelector("#nextButton");
-
-
-    function startTraining() {
-
-      if (trainingStarted) return;
-
-      trainingStarted = true;
-
-      startMessage.style.display = "none";
-      progressContainer.style.display = "block";
-      instructionPanel.style.display = "block";
-      buttonContainer.style.display = "flex";
-
-      updateStep();
-    }
-
-
-    markerTarget.addEventListener(
-      "targetFound",
-      startTraining
-    );
-
-
-    function updateStep() {
-
-      stepTitle.textContent =
-        steps[currentStep].title;
-
-      stepDescription.textContent =
-        steps[currentStep].text;
-
-
-      for (let i = 0; i < steps.length; i++) {
-
-        const model =
-          document.querySelector("#model" + i);
-
-        if (model) {
-
-          model.setAttribute(
-            "visible",
-            i === currentStep
-          );
-
-        }
-
-      }
-
-
-      stepCounter.textContent =
-        "Step " +
-        (currentStep + 1) +
-        " of " +
-        steps.length;
-
-
-      const progress =
-        ((currentStep + 1) / steps.length) * 100;
-
-
-      progressBar.style.width =
-        progress + "%";
-
-      progressBar.style.backgroundColor =
-        "#6EC6FF";
-
-      nextButton.style.backgroundColor =
-        "#6EC6FF";
-
-
-      backButton.disabled =
-        currentStep === 0;
-
-      nextButton.disabled =
-        currentStep === steps.length - 1;
-
-
-      nextButton.textContent =
-        currentStep === steps.length - 1
-          ? "Completed"
-          : "Next Step";
-
-    }
-
-
-    function nextStep() {
-
-      if (
-        trainingStarted &&
-        currentStep < steps.length - 1
-      ) {
-
-        currentStep++;
-        updateStep();
-
-      }
-
-    }
-
-
-    function previousStep() {
-
-      if (
-        trainingStarted &&
-        currentStep > 0
-      ) {
-
-        currentStep--;
-        updateStep();
-
-      }
-
-    }
-
-
-    nextButton.addEventListener(
-      "click",
-      nextStep
-    );
-
-    backButton.addEventListener(
-      "click",
-      previousStep
-    );
-
-  </script>
-
-</body>
-</html>
