@@ -225,7 +225,6 @@
 
     </a-assets>
 
-
     <a-light
       type="ambient"
       color="#ffffff"
@@ -239,12 +238,10 @@
       position="1 2 3">
     </a-light>
 
-
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
-
 
     <a-entity
       id="markerTarget"
@@ -257,30 +254,29 @@
         scale="1.5 1.5 1.5"
       >
 
-
         <!-- STEP 1 - BIGGER + MORE UP -->
 
         <a-entity
           id="model0"
           gltf-model="#asset0"
 
-          position="-0.55 0.40 0"
+          position="-0.55 0.55 0"
 
           rotation="0 0 0"
 
-          scale="0.10 0.10 0.10"
+          scale="0.115 0.115 0.115"
 
           visible="true">
         </a-entity>
 
 
-        <!-- STEP 2 - MORE LEFT + MUCH MORE UP -->
+        <!-- STEP 2 - BACK TO PREVIOUS POSITION -->
 
         <a-entity
           id="model1"
           gltf-model="#asset1"
 
-          position="-0.80 0.50 0.18"
+          position="-0.60 0 0.18"
 
           rotation="90 180 0"
 
@@ -299,13 +295,13 @@
         </a-entity>
 
 
-        <!-- STEP 3 -->
+        <!-- STEP 3 - MUCH MORE UP + MORE LEFT -->
 
         <a-entity
           id="model2"
           gltf-model="#asset2"
 
-          position="-0.75 0.20 0.30"
+          position="-0.90 0.70 0.30"
 
           rotation="0 0 0"
 
@@ -423,7 +419,6 @@
           visible="false">
         </a-entity>
 
-
       </a-entity>
 
     </a-entity>
@@ -437,7 +432,6 @@
     Scan the CPR marker to begin the training.
   </div>
 
-
   <div id="progressContainer">
 
     <div id="stepCounter">
@@ -450,7 +444,6 @@
 
   </div>
 
-
   <div id="instructionPanel">
 
     <div id="stepTitle">
@@ -462,7 +455,6 @@
     </div>
 
   </div>
-
 
   <div id="buttonContainer">
 
