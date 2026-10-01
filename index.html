@@ -148,9 +148,7 @@
   </style>
 </head>
 
-
 <body>
-
 
   <a-scene
 
@@ -175,9 +173,7 @@
 
   >
 
-
     <a-assets timeout="60000">
-
 
       <!-- STEP 1 -->
       <a-asset-item
@@ -185,13 +181,11 @@
         src="./models/basic_hand.glb?v=3">
       </a-asset-item>
 
-
       <!-- STEP 2 -->
       <a-asset-item
         id="asset1"
         src="./models/phone_2.glb">
       </a-asset-item>
-
 
       <!-- STEP 3 -->
       <a-asset-item
@@ -199,13 +193,11 @@
         src="./models/head_3.glb">
       </a-asset-item>
 
-
       <!-- STEP 4 -->
       <a-asset-item
         id="asset3"
         src="./models/lungs_4.glb">
       </a-asset-item>
-
 
       <!-- STEP 5 -->
       <a-asset-item
@@ -213,13 +205,11 @@
         src="./models/hands_5.glb">
       </a-asset-item>
 
-
       <!-- STEP 6 -->
       <a-asset-item
         id="asset5"
         src="./models/administering_cpr.glb">
       </a-asset-item>
-
 
       <!-- STEP 7 -->
       <a-asset-item
@@ -227,13 +217,11 @@
         src="./models/heart_7.glb">
       </a-asset-item>
 
-
       <!-- STEP 8 -->
       <a-asset-item
         id="asset7"
         src="./models/ambulance_8.glb">
       </a-asset-item>
-
 
     </a-assets>
 
@@ -243,7 +231,6 @@
       color="#ffffff"
       intensity="1.5">
     </a-light>
-
 
     <a-light
       type="directional"
@@ -264,7 +251,6 @@
       mindar-image-target="targetIndex: 0"
     >
 
-
       <a-entity
         id="modelContainer"
         position="-0.50 0 0.20"
@@ -282,7 +268,7 @@
 
           rotation="0 0 0"
 
-          scale="0.04 0.04 0.04"
+          scale="0.07 0.07 0.07"
 
           visible="true">
         </a-entity>
@@ -440,16 +426,12 @@
 
       </a-entity>
 
-
     </a-entity>
-
 
   </a-scene>
 
 
-
   <!-- UI -->
-
 
   <div id="startMessage">
     Scan the CPR marker to begin the training.
@@ -501,9 +483,7 @@
   </div>
 
 
-
   <script>
-
 
     const steps = [
 
@@ -551,7 +531,6 @@
 
 
     let currentStep = 0;
-
     let trainingStarted = false;
 
 
@@ -597,17 +576,10 @@
 
       trainingStarted = true;
 
-      startMessage.style.display =
-        "none";
-
-      progressContainer.style.display =
-        "block";
-
-      instructionPanel.style.display =
-        "block";
-
-      buttonContainer.style.display =
-        "flex";
+      startMessage.style.display = "none";
+      progressContainer.style.display = "block";
+      instructionPanel.style.display = "block";
+      buttonContainer.style.display = "flex";
 
       updateStep();
 
@@ -636,9 +608,7 @@
       ) {
 
         const model =
-          document.querySelector(
-            "#model" + i
-          );
+          document.querySelector("#model" + i);
 
         if (model) {
 
@@ -668,10 +638,8 @@
       progressBar.style.width =
         progress + "%";
 
-
       progressBar.style.backgroundColor =
         "#6EC6FF";
-
 
       nextButton.style.backgroundColor =
         "#6EC6FF";
@@ -679,7 +647,6 @@
 
       backButton.disabled =
         currentStep === 0;
-
 
       nextButton.disabled =
         currentStep ===
@@ -704,7 +671,6 @@
       ) {
 
         currentStep++;
-
         updateStep();
 
       }
@@ -720,7 +686,6 @@
       ) {
 
         currentStep--;
-
         updateStep();
 
       }
@@ -739,10 +704,7 @@
       previousStep
     );
 
-
   </script>
 
-
 </body>
-
 </html>
