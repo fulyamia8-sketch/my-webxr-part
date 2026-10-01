@@ -294,7 +294,7 @@
           id="model2"
           gltf-model="#asset2"
 
-          position="-1.05 1.75 0.30"
+          position="-1.05 1.55 0.30"
 
           rotation="0 0 0"
 
@@ -495,8 +495,10 @@
 
     ];
 
+
     let currentStep = 0;
     let trainingStarted = false;
+
 
     const markerTarget =
       document.querySelector("#markerTarget");
@@ -564,6 +566,7 @@
       stepDescription.textContent =
         steps[currentStep].text;
 
+
       for (
         let i = 0;
         i < steps.length;
@@ -584,16 +587,19 @@
 
       }
 
+
       stepCounter.textContent =
         "Step " +
         (currentStep + 1) +
         " of " +
         steps.length;
 
+
       const progress =
         ((currentStep + 1) /
           steps.length) *
         100;
+
 
       progressBar.style.width =
         progress + "%";
@@ -604,12 +610,14 @@
       nextButton.style.backgroundColor =
         "#6EC6FF";
 
+
       backButton.disabled =
         currentStep === 0;
 
       nextButton.disabled =
         currentStep ===
         steps.length - 1;
+
 
       nextButton.textContent =
         currentStep ===
@@ -655,6 +663,7 @@
       "click",
       nextStep
     );
+
 
     backButton.addEventListener(
       "click",
