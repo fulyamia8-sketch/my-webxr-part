@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
 
@@ -11,159 +12,234 @@
   <title>WebAR CPR Training</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+
   <style>
+
+    html,
     body {
       margin: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       font-family: Arial, sans-serif;
     }
+
+
+    /* START MESSAGE */
 
     #startMessage {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 2000;
+
+      z-index: 99999;
+
       width: 80%;
       max-width: 420px;
+
       box-sizing: border-box;
+
       background: rgba(0, 0, 0, 0.78);
       color: white;
+
       padding: 20px;
+
       border-radius: 14px;
+
       text-align: center;
+
       font-size: 19px;
       line-height: 1.4;
+
+      pointer-events: none;
     }
+
+
+    /* PROGRESS */
 
     #progressContainer {
       display: none;
+
       position: fixed;
+
       top: 20px;
       left: 50%;
+
       transform: translateX(-50%);
+
       width: 82%;
       max-width: 500px;
-      z-index: 1000;
+
+      z-index: 99999;
+
       background: rgba(0, 0, 0, 0.60);
+
       padding: 10px 14px;
+
       border-radius: 12px;
+
       box-sizing: border-box;
+
+      pointer-events: none;
     }
+
 
     #stepCounter {
       color: white;
+
       text-align: center;
+
       font-size: 15px;
+
       font-weight: bold;
+
       margin-bottom: 7px;
     }
 
+
     #progressBackground {
       width: 100%;
+
       height: 9px;
+
       background: rgba(255, 255, 255, 0.30);
+
       border-radius: 10px;
+
       overflow: hidden;
     }
 
+
     #progressBar {
       height: 100%;
+
       width: 12.5%;
+
       background: #6EC6FF;
+
       border-radius: 10px;
+
       transition: width 0.3s ease;
     }
 
+
+    /* INSTRUCTION */
+
     #instructionPanel {
       display: none;
+
       position: fixed;
+
       top: 105px;
       left: 50%;
+
       transform: translateX(-50%);
+
       width: 82%;
       max-width: 520px;
-      z-index: 1000;
+
+      z-index: 99999;
+
       background: rgba(0, 0, 0, 0.72);
+
       color: white;
+
       padding: 12px 15px;
+
       border-radius: 12px;
+
       text-align: center;
+
       font-size: 18px;
+
       line-height: 1.4;
+
       box-sizing: border-box;
+
+      pointer-events: none;
     }
+
 
     #stepTitle {
       font-weight: bold;
       margin-bottom: 5px;
     }
 
+
+    /* BUTTONS */
+
     #buttonContainer {
       display: none;
+
       position: fixed;
+
       bottom: 30px;
       left: 50%;
+
       transform: translateX(-50%);
-      z-index: 1000;
+
+      z-index: 99999;
+
       gap: 15px;
+
+      pointer-events: auto;
     }
 
+
     .navButton {
+
       padding: 14px 22px;
+
       border: none;
+
       border-radius: 10px;
+
       color: white;
+
       font-size: 17px;
+
       font-weight: 600;
+
       min-width: 125px;
+
+      cursor: pointer;
+
+      pointer-events: auto;
     }
+
 
     #backButton {
       background: #555555;
     }
 
+
     #nextButton {
       background: #6EC6FF;
     }
 
+
     .navButton:disabled {
       opacity: 0.40;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <div id="startMessage">
-    Scan the CPR marker to begin the training.
-  </div>
 
-  <div id="progressContainer">
-    <div id="stepCounter">
-      Step 1 of 8
-    </div>
-
-    <div id="progressBackground">
-      <div id="progressBar"></div>
-    </div>
-  </div>
-
-  <div id="instructionPanel">
-    <div id="stepTitle">
-      STEP 1
-    </div>
-
-    <div id="stepDescription">
-      Check responsiveness.
-    </div>
-  </div>
-
+  <!-- AR SCENE -->
 
   <a-scene
+
     mindar-image="
       imageTargetSrc: ./targets.mind;
       filterMinCF: 0.0001;
@@ -171,66 +247,95 @@
       warmupTolerance: 5;
       missTolerance: 10;
     "
+
     color-space="sRGB"
-    renderer="colorManagement: true; physicallyCorrectLights: true;"
+
+    renderer="
+      colorManagement: true;
+      physicallyCorrectLights: true;
+    "
+
     vr-mode-ui="enabled: false"
+
     device-orientation-permission-ui="enabled: true"
+
   >
+
+
+    <!-- ASSETS -->
 
     <a-assets timeout="60000">
 
+
       <!-- STEP 1 -->
+
       <a-asset-item
         id="asset0"
-        src="./models/basic_hand.glb">
+        src="./models/basic_hand.glb?v=2">
       </a-asset-item>
 
+
       <!-- STEP 2 -->
+
       <a-asset-item
         id="asset1"
         src="./models/phone_2.glb">
       </a-asset-item>
 
+
       <!-- STEP 3 -->
+
       <a-asset-item
         id="asset2"
         src="./models/head_3.glb">
       </a-asset-item>
 
+
       <!-- STEP 4 -->
+
       <a-asset-item
         id="asset3"
         src="./models/lungs_4.glb">
       </a-asset-item>
 
+
       <!-- STEP 5 -->
+
       <a-asset-item
         id="asset4"
         src="./models/hands_5.glb">
       </a-asset-item>
 
+
       <!-- STEP 6 -->
+
       <a-asset-item
         id="asset5"
         src="./models/administering_cpr.glb">
       </a-asset-item>
 
+
       <!-- STEP 7 -->
+
       <a-asset-item
         id="asset6"
         src="./models/heart_7.glb">
       </a-asset-item>
 
+
       <!-- STEP 8 -->
+
       <a-asset-item
         id="asset7"
         src="./models/ambulance_8.glb">
       </a-asset-item>
 
+
     </a-assets>
 
 
-    <!-- LIGHTS -->
+
+    <!-- LIGHT -->
 
     <a-light
       type="ambient"
@@ -238,12 +343,14 @@
       intensity="1.5">
     </a-light>
 
+
     <a-light
       type="directional"
       color="#ffffff"
       intensity="1.5"
       position="1 2 3">
     </a-light>
+
 
 
     <!-- CAMERA -->
@@ -254,6 +361,7 @@
     </a-camera>
 
 
+
     <!-- MARKER -->
 
     <a-entity
@@ -261,32 +369,58 @@
       mindar-image-target="targetIndex: 0"
     >
 
+
+      <!-- ALL MODELS -->
+
       <a-entity
+
         id="modelContainer"
+
         position="-0.50 0 0.20"
+
         scale="1.5 1.5 1.5"
+
       >
 
 
-        <!-- STEP 1 - BASIC HAND TEST POSITION -->
+
+        <!-- ================================= -->
+        <!-- STEP 1 - BASIC HAND              -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model0"
+
           gltf-model="#asset0"
+
           position="-0.60 0 0.30"
+
           rotation="0 0 0"
-          scale="1 1 1"
-          visible="true">
+
+          scale="0.001 0.001 0.001"
+
+          visible="true"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 2 - PHONE RING -->
+
+        <!-- ================================= -->
+        <!-- STEP 2 - PHONE RING              -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model1"
+
           gltf-model="#asset1"
+
           position="-0.60 0 0.18"
+
           rotation="90 180 0"
+
           scale="3.00 3.00 3.00"
 
           animation__ring="
@@ -296,19 +430,30 @@
             dur: 140;
             dir: alternate;
             loop: true;
-            easing: easeInOutSine"
+            easing: easeInOutSine
+          "
 
-          visible="false">
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 3 -->
+
+        <!-- ================================= -->
+        <!-- STEP 3 - HEAD                    -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model2"
+
           gltf-model="#asset2"
+
           position="-0.45 -0.10 0.30"
+
           rotation="0 0 0"
+
           scale="2.50 2.50 2.50"
 
           animation__headtilt="
@@ -318,19 +463,30 @@
             dur: 1500;
             dir: alternate;
             loop: true;
-            easing: easeInOutSine"
+            easing: easeInOutSine
+          "
 
-          visible="false">
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 4 -->
+
+        <!-- ================================= -->
+        <!-- STEP 4 - LUNGS                   -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model3"
+
           gltf-model="#asset3"
+
           position="-1.15 0 0.18"
+
           rotation="0 0 0"
+
           scale="0.45 0.45 0.45"
 
           animation__breathing="
@@ -340,44 +496,78 @@
             dur: 1800;
             dir: alternate;
             loop: true;
-            easing: easeInOutSine"
+            easing: easeInOutSine
+          "
 
-          visible="false">
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 5 -->
+
+        <!-- ================================= -->
+        <!-- STEP 5 - HANDS                   -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model4"
+
           gltf-model="#asset4"
+
           position="-0.35 -0.10 0.18"
+
           rotation="0 0 0"
+
           scale="1.00 1.00 1.00"
-          visible="false">
+
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 6 -->
+
+        <!-- ================================= -->
+        <!-- STEP 6 - CPR                     -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model5"
+
           gltf-model="#asset5"
+
           position="-0.80 -0.25 0.18"
+
           rotation="0 0 0"
+
           scale="0.50 0.50 0.50"
+
           animation-mixer="loop: repeat"
-          visible="false">
+
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 7 -->
+
+        <!-- ================================= -->
+        <!-- STEP 7 - HEART                   -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model6"
+
           gltf-model="#asset6"
+
           position="-0.60 -0.60 0.18"
+
           rotation="0 0 0"
+
           scale="0.35 0.35 0.35"
 
           animation__heartbeat="
@@ -387,98 +577,537 @@
             dur: 500;
             dir: alternate;
             loop: true;
-            easing: easeInOutSine"
+            easing: easeInOutSine
+          "
 
-          visible="false">
+          visible="false"
+
+        >
         </a-entity>
 
 
-        <!-- STEP 8 -->
+
+        <!-- ================================= -->
+        <!-- STEP 8 - AMBULANCE               -->
+        <!-- ================================= -->
 
         <a-entity
+
           id="model7"
+
           gltf-model="#asset7"
+
           position="-0.45 0 0.18"
+
           rotation="0 0 0"
+
           scale="0.35 0.35 0.35"
-          visible="false">
+
+          visible="false"
+
+        >
         </a-entity>
 
 
       </a-entity>
 
+
     </a-entity>
 
+
   </a-scene>
+
+
+
+  <!-- ================================= -->
+  <!-- UI                                -->
+  <!-- ================================= -->
+
+
+  <div id="startMessage">
+
+    Scan the CPR marker to begin the training.
+
+  </div>
+
+
+
+  <!-- PROGRESS -->
+
+  <div id="progressContainer">
+
+    <div id="stepCounter">
+
+      Step 1 of 8
+
+    </div>
+
+
+    <div id="progressBackground">
+
+      <div id="progressBar"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- INSTRUCTION -->
+
+  <div id="instructionPanel">
+
+    <div id="stepTitle">
+
+      STEP 1
+
+    </div>
+
+
+    <div id="stepDescription">
+
+      Check responsiveness.
+
+    </div>
+
+  </div>
+
 
 
   <!-- BUTTONS -->
 
   <div id="buttonContainer">
 
-    <button
-      id="backButton"
-      class="navButton"
-      type="button">
-      Back Step
-    </button>
 
     <button
-      id="nextButton"
+
+      id="backButton"
+
       class="navButton"
-      type="button">
-      Next Step
+
+      type="button"
+
+    >
+
+      Back Step
+
     </button>
+
+
+
+    <button
+
+      id="nextButton"
+
+      class="navButton"
+
+      type="button"
+
+    >
+
+      Next Step
+
+    </button>
+
 
   </div>
 
 
+
+  <!-- ================================= -->
+  <!-- JAVASCRIPT                        -->
+  <!-- ================================= -->
+
   <script>
+
 
     const steps = [
 
+
       {
+
         title: "STEP 1",
-        text: "Check responsiveness. Gently tap the person and ask loudly: Are you okay?"
+
+        text:
+          "Check responsiveness. Gently tap the person and ask loudly: Are you okay?"
+
       },
 
+
       {
+
         title: "STEP 2",
-        text: "Call emergency services. In Germany, dial 112."
+
+        text:
+          "Call emergency services. In Germany, dial 112."
+
       },
 
+
       {
+
         title: "STEP 3",
-        text: "Open the airway. Gently tilt the head back and lift the chin upward."
+
+        text:
+          "Open the airway. Gently tilt the head back and lift the chin upward."
+
       },
 
+
       {
+
         title: "STEP 4",
-        text: "Check breathing. Look, listen and feel for normal breathing."
+
+        text:
+          "Check breathing. Look, listen and feel for normal breathing."
+
       },
 
+
       {
+
         title: "STEP 5",
-        text: "Place both hands in the centre of the chest."
+
+        text:
+          "Place both hands in the centre of the chest."
+
       },
 
+
       {
+
         title: "STEP 6",
-        text: "Start chest compressions. Push the chest down firmly."
+
+        text:
+          "Start chest compressions. Push the chest down firmly."
+
       },
 
+
       {
+
         title: "STEP 7",
-        text: "Push hard and fast at a steady rhythm of about 100–120 compressions per minute."
+
+        text:
+          "Push hard and fast at a steady rhythm of about 100–120 compressions per minute."
+
       },
 
+
       {
+
         title: "STEP 8",
-        text: "Continue CPR until emergency help arrives or the person starts breathing normally."
+
+        text:
+          "Continue CPR until emergency help arrives or the person starts breathing normally."
+
       }
+
 
     ];
 
 
+
     let currentStep = 0;
+
     let trainingStarted = false;
+
+
+
+    const markerTarget =
+      document.querySelector("#markerTarget");
+
+
+    const startMessage =
+      document.querySelector("#startMessage");
+
+
+    const progressContainer =
+      document.querySelector("#progressContainer");
+
+
+    const instructionPanel =
+      document.querySelector("#instructionPanel");
+
+
+    const buttonContainer =
+      document.querySelector("#buttonContainer");
+
+
+    const stepTitle =
+      document.querySelector("#stepTitle");
+
+
+    const stepDescription =
+      document.querySelector("#stepDescription");
+
+
+    const stepCounter =
+      document.querySelector("#stepCounter");
+
+
+    const progressBar =
+      document.querySelector("#progressBar");
+
+
+    const backButton =
+      document.querySelector("#backButton");
+
+
+    const nextButton =
+      document.querySelector("#nextButton");
+
+
+
+    /* START TRAINING */
+
+    function startTraining() {
+
+
+      if (trainingStarted) {
+
+        return;
+
+      }
+
+
+      trainingStarted = true;
+
+
+      startMessage.style.display =
+        "none";
+
+
+      progressContainer.style.display =
+        "block";
+
+
+      instructionPanel.style.display =
+        "block";
+
+
+      buttonContainer.style.display =
+        "flex";
+
+
+      updateStep();
+
+    }
+
+
+
+    markerTarget.addEventListener(
+
+      "targetFound",
+
+      startTraining
+
+    );
+
+
+
+    /* UPDATE STEP */
+
+    function updateStep() {
+
+
+      stepTitle.textContent =
+        steps[currentStep].title;
+
+
+      stepDescription.textContent =
+        steps[currentStep].text;
+
+
+
+      /* MODEL VISIBILITY */
+
+      for (
+
+        let i = 0;
+
+        i < steps.length;
+
+        i++
+
+      ) {
+
+
+        const model =
+          document.querySelector(
+            "#model" + i
+          );
+
+
+        if (model) {
+
+
+          model.setAttribute(
+
+            "visible",
+
+            i === currentStep
+
+          );
+
+
+        }
+
+
+      }
+
+
+
+      /* STEP COUNTER */
+
+      stepCounter.textContent =
+
+        "Step " +
+
+        (currentStep + 1) +
+
+        " of " +
+
+        steps.length;
+
+
+
+      /* PROGRESS BAR */
+
+      const progress =
+
+        ((currentStep + 1) /
+
+          steps.length) *
+
+        100;
+
+
+
+      progressBar.style.width =
+
+        progress + "%";
+
+
+
+      progressBar.style.backgroundColor =
+
+        "#6EC6FF";
+
+
+
+      nextButton.style.backgroundColor =
+
+        "#6EC6FF";
+
+
+
+      /* BUTTON STATUS */
+
+      backButton.disabled =
+
+        currentStep === 0;
+
+
+
+      nextButton.disabled =
+
+        currentStep ===
+        steps.length - 1;
+
+
+
+      nextButton.textContent =
+
+        currentStep ===
+        steps.length - 1
+
+          ? "Completed"
+
+          : "Next Step";
+
+
+    }
+
+
+
+    /* NEXT */
+
+    function nextStep() {
+
+
+      if (
+
+        trainingStarted &&
+
+        currentStep <
+          steps.length - 1
+
+      ) {
+
+
+        currentStep++;
+
+
+        updateStep();
+
+
+      }
+
+
+    }
+
+
+
+    /* BACK */
+
+    function previousStep() {
+
+
+      if (
+
+        trainingStarted &&
+
+        currentStep > 0
+
+      ) {
+
+
+        currentStep--;
+
+
+        updateStep();
+
+
+      }
+
+
+    }
+
+
+
+    nextButton.addEventListener(
+
+      "click",
+
+      nextStep
+
+    );
+
+
+
+    backButton.addEventListener(
+
+      "click",
+
+      previousStep
+
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
