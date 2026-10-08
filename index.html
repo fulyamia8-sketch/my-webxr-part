@@ -1,13 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>WebAR CPR Training</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -15,8 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    html,
-    body {
+    html, body {
       margin: 0;
       width: 100%;
       height: 100%;
@@ -131,17 +126,10 @@
       pointer-events: auto;
     }
 
-    #backButton {
-      background: #555555;
-    }
+    #backButton { background: #555555; }
+    #nextButton { background: #6EC6FF; }
 
-    #nextButton {
-      background: #6EC6FF;
-    }
-
-    .navButton:disabled {
-      opacity: 0.40;
-    }
+    .navButton:disabled { opacity: 0.40; }
   </style>
 </head>
 
@@ -165,79 +153,22 @@
   >
 
     <a-assets timeout="60000">
-
-      <!-- STEP 1 -->
-      <a-asset-item
-        id="asset0"
-        src="./models/basic_hand.glb?v=3">
-      </a-asset-item>
-
-      <!-- STEP 2 -->
-      <a-asset-item
-        id="asset1"
-        src="./models/phone_2.glb">
-      </a-asset-item>
-
-      <!-- STEP 3 -->
-      <a-asset-item
-        id="asset2"
-        src="./models/head_3.glb">
-      </a-asset-item>
-
-      <!-- STEP 4 -->
-      <a-asset-item
-        id="asset3"
-        src="./models/lungs_4.glb">
-      </a-asset-item>
-
-      <!-- STEP 5 -->
-      <a-asset-item
-        id="asset4"
-        src="./models/hands_5.glb">
-      </a-asset-item>
-
-      <!-- STEP 6 -->
-      <a-asset-item
-        id="asset5"
-        src="./models/administering_cpr.glb">
-      </a-asset-item>
-
-      <!-- STEP 7 -->
-      <a-asset-item
-        id="asset6"
-        src="./models/heart_7.glb">
-      </a-asset-item>
-
-      <!-- STEP 8 -->
-      <a-asset-item
-        id="asset7"
-        src="./models/ambulance_8.glb">
-      </a-asset-item>
-
+      <a-asset-item id="asset0" src="./models/basic_hand.glb?v=3"></a-asset-item>
+      <a-asset-item id="asset1" src="./models/phone_2.glb"></a-asset-item>
+      <a-asset-item id="asset2" src="./models/head_3.glb"></a-asset-item>
+      <a-asset-item id="asset3" src="./models/lungs_4.glb"></a-asset-item>
+      <a-asset-item id="asset4" src="./models/hands_5.glb"></a-asset-item>
+      <a-asset-item id="asset5" src="./models/administering_cpr.glb"></a-asset-item>
+      <a-asset-item id="asset6" src="./models/heart_7.glb"></a-asset-item>
+      <a-asset-item id="asset7" src="./models/ambulance_8.glb"></a-asset-item>
     </a-assets>
 
-    <a-light
-      type="ambient"
-      color="#ffffff"
-      intensity="1.5">
-    </a-light>
+    <a-light type="ambient" color="#ffffff" intensity="1.5"></a-light>
+    <a-light type="directional" color="#ffffff" intensity="1.5" position="1 2 3"></a-light>
 
-    <a-light
-      type="directional"
-      color="#ffffff"
-      intensity="1.5"
-      position="1 2 3">
-    </a-light>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
-    </a-camera>
-
-    <a-entity
-      id="markerTarget"
-      mindar-image-target="targetIndex: 0"
-    >
+    <a-entity id="markerTarget" mindar-image-target="targetIndex: 0">
 
       <a-entity
         id="modelContainer"
@@ -245,7 +176,7 @@
         scale="1.5 1.5 1.5"
       >
 
-        <!-- STEP 1 - UNCHANGED -->
+        <!-- STEP 1 -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
@@ -255,14 +186,13 @@
           visible="true">
         </a-entity>
 
-        <!-- STEP 2 - UNCHANGED -->
+        <!-- STEP 2 -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
           position="-0.60 0 0.18"
           rotation="90 180 0"
           scale="3.00 3.00 3.00"
-
           animation__ring="
             property: rotation;
             from: 90 180 -12;
@@ -271,18 +201,16 @@
             dir: alternate;
             loop: true;
             easing: easeInOutSine"
-
           visible="false">
         </a-entity>
 
-        <!-- STEP 3 - UNCHANGED -->
+        <!-- STEP 3 -->
         <a-entity
           id="model2"
           gltf-model="#asset2"
           position="-1.05 1.55 0.30"
           rotation="0 0 0"
           scale="2.65 2.65 2.65"
-
           animation__headtilt="
             property: rotation;
             from: 0 0 0;
@@ -291,18 +219,16 @@
             dir: alternate;
             loop: true;
             easing: easeInOutSine"
-
           visible="false">
         </a-entity>
 
-        <!-- STEP 4 - UNCHANGED -->
+        <!-- STEP 4 -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
           position="-1.15 0 0.18"
           rotation="0 0 0"
           scale="0.45 0.45 0.45"
-
           animation__breathing="
             property: scale;
             from: 0.45 0.45 0.45;
@@ -311,21 +237,20 @@
             dir: alternate;
             loop: true;
             easing: easeInOutSine"
-
           visible="false">
         </a-entity>
 
-        <!-- STEP 5 - ROTATED ANOTHER 180 DEGREES, SMALLER -->
+        <!-- STEP 5 - TEST NEW AXIS -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
-          position="-1.05 -0.05 0.30"
-          rotation="-360 0 0"
+          position="-1.05 -0.05 0.45"
+          rotation="0 180 0"
           scale="1.10 1.10 1.10"
           visible="false">
         </a-entity>
 
-        <!-- STEP 6 - ROTATED 90 DEGREES LEFT, SMALLER -->
+        <!-- STEP 6 -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
@@ -336,14 +261,13 @@
           visible="false">
         </a-entity>
 
-        <!-- STEP 7 - SLIGHTLY SMALLER -->
+        <!-- STEP 7 -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
           position="-0.80 -0.60 0.18"
           rotation="0 0 0"
           scale="0.32 0.32 0.32"
-
           animation__heartbeat="
             property: scale;
             from: 0.32 0.32 0.32;
@@ -352,11 +276,10 @@
             dir: alternate;
             loop: true;
             easing: easeInOutSine"
-
           visible="false">
         </a-entity>
 
-        <!-- STEP 8 - SLIGHTLY BIGGER -->
+        <!-- STEP 8 -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -367,55 +290,32 @@
         </a-entity>
 
       </a-entity>
-
     </a-entity>
-
   </a-scene>
 
   <!-- UI -->
-
   <div id="startMessage">
     Scan the CPR marker to begin the training.
   </div>
 
   <div id="progressContainer">
-    <div id="stepCounter">
-      Step 1 of 8
-    </div>
-
+    <div id="stepCounter">Step 1 of 8</div>
     <div id="progressBackground">
       <div id="progressBar"></div>
     </div>
   </div>
 
   <div id="instructionPanel">
-    <div id="stepTitle">
-      STEP 1
-    </div>
-
-    <div id="stepDescription">
-      Check responsiveness.
-    </div>
+    <div id="stepTitle">STEP 1</div>
+    <div id="stepDescription">Check responsiveness.</div>
   </div>
 
   <div id="buttonContainer">
-    <button
-      id="backButton"
-      class="navButton"
-      type="button">
-      Back Step
-    </button>
-
-    <button
-      id="nextButton"
-      class="navButton"
-      type="button">
-      Next Step
-    </button>
+    <button id="backButton" class="navButton" type="button">Back Step</button>
+    <button id="nextButton" class="navButton" type="button">Next Step</button>
   </div>
 
   <script>
-
     const steps = [
       {
         title: "STEP 1",
@@ -454,138 +354,69 @@
     let currentStep = 0;
     let trainingStarted = false;
 
-    const markerTarget =
-      document.querySelector("#markerTarget");
-
-    const startMessage =
-      document.querySelector("#startMessage");
-
-    const progressContainer =
-      document.querySelector("#progressContainer");
-
-    const instructionPanel =
-      document.querySelector("#instructionPanel");
-
-    const buttonContainer =
-      document.querySelector("#buttonContainer");
-
-    const stepTitle =
-      document.querySelector("#stepTitle");
-
-    const stepDescription =
-      document.querySelector("#stepDescription");
-
-    const stepCounter =
-      document.querySelector("#stepCounter");
-
-    const progressBar =
-      document.querySelector("#progressBar");
-
-    const backButton =
-      document.querySelector("#backButton");
-
-    const nextButton =
-      document.querySelector("#nextButton");
+    const markerTarget = document.querySelector("#markerTarget");
+    const startMessage = document.querySelector("#startMessage");
+    const progressContainer = document.querySelector("#progressContainer");
+    const instructionPanel = document.querySelector("#instructionPanel");
+    const buttonContainer = document.querySelector("#buttonContainer");
+    const stepTitle = document.querySelector("#stepTitle");
+    const stepDescription = document.querySelector("#stepDescription");
+    const stepCounter = document.querySelector("#stepCounter");
+    const progressBar = document.querySelector("#progressBar");
+    const backButton = document.querySelector("#backButton");
+    const nextButton = document.querySelector("#nextButton");
 
     function startTraining() {
-      if (trainingStarted) {
-        return;
-      }
+      if (trainingStarted) return;
 
       trainingStarted = true;
-
       startMessage.style.display = "none";
       progressContainer.style.display = "block";
       instructionPanel.style.display = "block";
       buttonContainer.style.display = "flex";
-
       updateStep();
     }
 
-    markerTarget.addEventListener(
-      "targetFound",
-      startTraining
-    );
+    markerTarget.addEventListener("targetFound", startTraining);
 
     function updateStep() {
-      stepTitle.textContent =
-        steps[currentStep].title;
-
-      stepDescription.textContent =
-        steps[currentStep].text;
+      stepTitle.textContent = steps[currentStep].title;
+      stepDescription.textContent = steps[currentStep].text;
 
       for (let i = 0; i < steps.length; i++) {
-        const model =
-          document.querySelector("#model" + i);
-
-        if (model) {
-          model.setAttribute(
-            "visible",
-            i === currentStep
-          );
-        }
+        const model = document.querySelector("#model" + i);
+        if (model) model.setAttribute("visible", i === currentStep);
       }
 
-      stepCounter.textContent =
-        "Step " +
-        (currentStep + 1) +
-        " of " +
-        steps.length;
+      stepCounter.textContent = "Step " + (currentStep + 1) + " of " + steps.length;
 
-      const progress =
-        ((currentStep + 1) / steps.length) * 100;
+      const progress = ((currentStep + 1) / steps.length) * 100;
+      progressBar.style.width = progress + "%";
+      progressBar.style.backgroundColor = "#6EC6FF";
+      nextButton.style.backgroundColor = "#6EC6FF";
 
-      progressBar.style.width =
-        progress + "%";
-
-      progressBar.style.backgroundColor =
-        "#6EC6FF";
-
-      nextButton.style.backgroundColor =
-        "#6EC6FF";
-
-      backButton.disabled =
-        currentStep === 0;
-
-      nextButton.disabled =
-        currentStep === steps.length - 1;
-
+      backButton.disabled = currentStep === 0;
+      nextButton.disabled = currentStep === steps.length - 1;
       nextButton.textContent =
-        currentStep === steps.length - 1
-          ? "Completed"
-          : "Next Step";
+        currentStep === steps.length - 1 ? "Completed" : "Next Step";
     }
 
     function nextStep() {
-      if (
-        trainingStarted &&
-        currentStep < steps.length - 1
-      ) {
+      if (trainingStarted && currentStep < steps.length - 1) {
         currentStep++;
         updateStep();
       }
     }
 
     function previousStep() {
-      if (
-        trainingStarted &&
-        currentStep > 0
-      ) {
+      if (trainingStarted && currentStep > 0) {
         currentStep--;
         updateStep();
       }
     }
 
-    nextButton.addEventListener(
-      "click",
-      nextStep
-    );
-
-    backButton.addEventListener(
-      "click",
-      previousStep
-    );
-
+    nextButton.addEventListener("click", nextStep);
+    backButton.addEventListener("click", previousStep);
   </script>
 
 </body>
