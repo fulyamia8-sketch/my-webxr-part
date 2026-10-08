@@ -8,7 +8,6 @@
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
   >
-
   <title>WebAR CPR Training</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -316,39 +315,39 @@
           visible="false">
         </a-entity>
 
-        <!-- STEP 5 - TOP-DOWN HAND VIEW -->
+        <!-- STEP 5 - ROTATED ANOTHER 180 DEGREES, SMALLER -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
           position="-1.05 -0.05 0.30"
-          rotation="-90 0 0"
-          scale="1.20 1.20 1.20"
+          rotation="-360 0 0"
+          scale="1.10 1.10 1.10"
           visible="false">
         </a-entity>
 
-        <!-- STEP 6 - SMALLER, RIGHT AND UP -->
+        <!-- STEP 6 - ROTATED 90 DEGREES LEFT, SMALLER -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
-          position="-1.05 0.05 0.22"
-          rotation="0 -35 0"
-          scale="0.58 0.58 0.58"
+          position="-0.95 0.05 0.22"
+          rotation="0 -125 0"
+          scale="0.49 0.49 0.49"
           animation-mixer="loop: repeat"
           visible="false">
         </a-entity>
 
-        <!-- STEP 7 - UNCHANGED -->
+        <!-- STEP 7 - SLIGHTLY SMALLER -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
           position="-0.80 -0.60 0.18"
           rotation="0 0 0"
-          scale="0.35 0.35 0.35"
+          scale="0.32 0.32 0.32"
 
           animation__heartbeat="
             property: scale;
-            from: 0.35 0.35 0.35;
-            to: 0.43 0.43 0.43;
+            from: 0.32 0.32 0.32;
+            to: 0.39 0.39 0.39;
             dur: 500;
             dir: alternate;
             loop: true;
@@ -357,13 +356,13 @@
           visible="false">
         </a-entity>
 
-        <!-- STEP 8 - UNCHANGED -->
+        <!-- STEP 8 - SLIGHTLY BIGGER -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
           position="-0.65 0 0.18"
           rotation="0 0 0"
-          scale="0.35 0.35 0.35"
+          scale="0.38 0.38 0.38"
           visible="false">
         </a-entity>
 
@@ -489,7 +488,6 @@
       document.querySelector("#nextButton");
 
     function startTraining() {
-
       if (trainingStarted) {
         return;
       }
@@ -510,7 +508,6 @@
     );
 
     function updateStep() {
-
       stepTitle.textContent =
         steps[currentStep].title;
 
@@ -518,7 +515,6 @@
         steps[currentStep].text;
 
       for (let i = 0; i < steps.length; i++) {
-
         const model =
           document.querySelector("#model" + i);
 
@@ -561,7 +557,6 @@
     }
 
     function nextStep() {
-
       if (
         trainingStarted &&
         currentStep < steps.length - 1
@@ -572,7 +567,6 @@
     }
 
     function previousStep() {
-
       if (
         trainingStarted &&
         currentStep > 0
