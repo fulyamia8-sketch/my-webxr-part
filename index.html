@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
@@ -16,7 +16,6 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-
     html,
     body {
       margin: 0;
@@ -72,7 +71,7 @@
     #progressBackground {
       width: 100%;
       height: 9px;
-      background: rgba(255,255,255,0.30);
+      background: rgba(255, 255, 255, 0.30);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -94,7 +93,7 @@
       width: 82%;
       max-width: 520px;
       z-index: 99999;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0, 0, 0, 0.72);
       color: white;
       padding: 12px 15px;
       border-radius: 12px;
@@ -144,14 +143,12 @@
     .navButton:disabled {
       opacity: 0.40;
     }
-
   </style>
 </head>
 
 <body>
 
   <a-scene
-
     mindar-image="
       imageTargetSrc: ./targets.mind;
       filterMinCF: 0.0001;
@@ -159,18 +156,13 @@
       warmupTolerance: 5;
       missTolerance: 10;
     "
-
     color-space="sRGB"
-
     renderer="
       colorManagement: true;
       physicallyCorrectLights: true;
     "
-
     vr-mode-ui="enabled: false"
-
     device-orientation-permission-ui="enabled: true"
-
   >
 
     <a-assets timeout="60000">
@@ -254,8 +246,7 @@
         scale="1.5 1.5 1.5"
       >
 
-        <!-- STEP 1 -->
-
+        <!-- STEP 1 - UNCHANGED -->
         <a-entity
           id="model0"
           gltf-model="#asset0"
@@ -265,9 +256,7 @@
           visible="true">
         </a-entity>
 
-
-        <!-- STEP 2 -->
-
+        <!-- STEP 2 - UNCHANGED -->
         <a-entity
           id="model1"
           gltf-model="#asset1"
@@ -287,17 +276,12 @@
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 3 -->
-
+        <!-- STEP 3 - UNCHANGED -->
         <a-entity
           id="model2"
           gltf-model="#asset2"
-
           position="-1.05 1.55 0.30"
-
           rotation="0 0 0"
-
           scale="2.65 2.65 2.65"
 
           animation__headtilt="
@@ -312,9 +296,7 @@
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 4 -->
-
+        <!-- STEP 4 - UNCHANGED -->
         <a-entity
           id="model3"
           gltf-model="#asset3"
@@ -334,34 +316,28 @@
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 5 -->
-
+        <!-- STEP 5 - HANDS OVER PATIENT'S CHEST -->
         <a-entity
           id="model4"
           gltf-model="#asset4"
-          position="-0.65 -0.10 0.18"
-          rotation="0 0 0"
-          scale="1.00 1.00 1.00"
+          position="-1.05 -0.05 0.30"
+          rotation="-25 0 0"
+          scale="1.20 1.20 1.20"
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 6 -->
-
+        <!-- STEP 6 - RESCUER BESIDE PATIENT -->
         <a-entity
           id="model5"
           gltf-model="#asset5"
-          position="-1.00 -0.25 0.18"
-          rotation="0 0 0"
-          scale="0.50 0.50 0.50"
+          position="-1.20 -0.10 0.22"
+          rotation="0 -35 0"
+          scale="0.65 0.65 0.65"
           animation-mixer="loop: repeat"
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 7 -->
-
+        <!-- STEP 7 - UNCHANGED -->
         <a-entity
           id="model6"
           gltf-model="#asset6"
@@ -381,9 +357,7 @@
           visible="false">
         </a-entity>
 
-
-        <!-- STEP 8 -->
-
+        <!-- STEP 8 - UNCHANGED -->
         <a-entity
           id="model7"
           gltf-model="#asset7"
@@ -399,7 +373,6 @@
 
   </a-scene>
 
-
   <!-- UI -->
 
   <div id="startMessage">
@@ -407,7 +380,6 @@
   </div>
 
   <div id="progressContainer">
-
     <div id="stepCounter">
       Step 1 of 8
     </div>
@@ -415,11 +387,9 @@
     <div id="progressBackground">
       <div id="progressBar"></div>
     </div>
-
   </div>
 
   <div id="instructionPanel">
-
     <div id="stepTitle">
       STEP 1
     </div>
@@ -427,11 +397,9 @@
     <div id="stepDescription">
       Check responsiveness.
     </div>
-
   </div>
 
   <div id="buttonContainer">
-
     <button
       id="backButton"
       class="navButton"
@@ -445,60 +413,47 @@
       type="button">
       Next Step
     </button>
-
   </div>
-
 
   <script>
 
     const steps = [
-
       {
         title: "STEP 1",
         text: "Check responsiveness. Gently tap the person and ask loudly: Are you okay?"
       },
-
       {
         title: "STEP 2",
         text: "Call emergency services. In Germany, dial 112."
       },
-
       {
         title: "STEP 3",
         text: "Open the airway. Gently tilt the head back and lift the chin upward."
       },
-
       {
         title: "STEP 4",
         text: "Check breathing. Look, listen and feel for normal breathing."
       },
-
       {
         title: "STEP 5",
         text: "Place both hands in the centre of the chest."
       },
-
       {
         title: "STEP 6",
         text: "Start chest compressions. Push the chest down firmly."
       },
-
       {
         title: "STEP 7",
         text: "Push hard and fast at a steady rhythm of about 100–120 compressions per minute."
       },
-
       {
         title: "STEP 8",
         text: "Continue CPR until emergency help arrives or the person starts breathing normally."
       }
-
     ];
-
 
     let currentStep = 0;
     let trainingStarted = false;
-
 
     const markerTarget =
       document.querySelector("#markerTarget");
@@ -533,7 +488,6 @@
     const nextButton =
       document.querySelector("#nextButton");
 
-
     function startTraining() {
 
       if (trainingStarted) {
@@ -548,15 +502,12 @@
       buttonContainer.style.display = "flex";
 
       updateStep();
-
     }
-
 
     markerTarget.addEventListener(
       "targetFound",
       startTraining
     );
-
 
     function updateStep() {
 
@@ -566,27 +517,18 @@
       stepDescription.textContent =
         steps[currentStep].text;
 
-
-      for (
-        let i = 0;
-        i < steps.length;
-        i++
-      ) {
+      for (let i = 0; i < steps.length; i++) {
 
         const model =
           document.querySelector("#model" + i);
 
         if (model) {
-
           model.setAttribute(
             "visible",
             i === currentStep
           );
-
         }
-
       }
-
 
       stepCounter.textContent =
         "Step " +
@@ -594,12 +536,8 @@
         " of " +
         steps.length;
 
-
       const progress =
-        ((currentStep + 1) /
-          steps.length) *
-        100;
-
+        ((currentStep + 1) / steps.length) * 100;
 
       progressBar.style.width =
         progress + "%";
@@ -610,39 +548,28 @@
       nextButton.style.backgroundColor =
         "#6EC6FF";
 
-
       backButton.disabled =
         currentStep === 0;
 
       nextButton.disabled =
-        currentStep ===
-        steps.length - 1;
-
+        currentStep === steps.length - 1;
 
       nextButton.textContent =
-        currentStep ===
-        steps.length - 1
+        currentStep === steps.length - 1
           ? "Completed"
           : "Next Step";
-
     }
-
 
     function nextStep() {
 
       if (
         trainingStarted &&
-        currentStep <
-        steps.length - 1
+        currentStep < steps.length - 1
       ) {
-
         currentStep++;
         updateStep();
-
       }
-
     }
-
 
     function previousStep() {
 
@@ -650,20 +577,15 @@
         trainingStarted &&
         currentStep > 0
       ) {
-
         currentStep--;
         updateStep();
-
       }
-
     }
-
 
     nextButton.addEventListener(
       "click",
       nextStep
     );
-
 
     backButton.addEventListener(
       "click",
