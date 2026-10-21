@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CPR WebXR Camera Access Diagnostic</title>
+<style>
+html,body{margin:0;min-height:100%;background:#101820;color:#f3f7fa;font:15px system-ui,sans-serif}main{max-width:760px;margin:auto;padding:20px 16px 120px}h1{font-size:22px}p{line-height:1.5}button{padding:13px 22px;border:0;border-radius:12px;background:#24b7a5;color:#061a18;font-weight:700;font-size:16px}button:disabled{opacity:.45}#log{white-space:pre-wrap;overflow-wrap:anywhere;background:#1c2b34;padding:14px;border-radius:12px;line-height:1.55}#overlay{display:none;position:fixed;inset:0;pointer-events:none}#overlay.active{display:block}#status{position:absolute;top:12px;left:12px;right:12px;background:#000b;padding:12px;border-radius:10px;white-space:pre-wrap;font-size:13px}#end{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);pointer-events:auto;background:white;color:black}
+</style>
+</head>
+<body>
+<main>
+<h1>CPR — WebXR Camera Access Test</h1>
+<p>This page tests whether an Android browser supports immersive AR, hit-test, and access to the AR camera texture. It does not yet recognize the CPR marker.</p>
+<p><strong>Use Android Chrome on an ARCore-compatible device over HTTPS.</strong></p>
+<button id="start" disabled>Checking WebXR…</button>
+<pre id="log" aria-live="polite"></pre>
+</main>
+<div id="overlay"><div id="status">Starting AR…</div><button id="end">End AR</button></div>
+<script>
+const start=document.getElementById('start'), log=document.getElementById('log'), overlay=document.getElementById('overlay'), status=document.getElementById('status');
+const lines=[]; function say(s){if(lines[lines.length-1]!==s){lines.push(s);log.textContent=lines.join('\n');}status.textContent=lines.slice(-5).join('\n');}
+let session=null, frames=0, cameraSeen=false, textureSeen=false, hitTestSeen=false;
+async function check(){
+ say('Secure context: '+window.isSecureContext);
+ say('navigator.xr available: '+Boolean(navigator.xr));
+ say('XRWebGLBinding available: '+Boolean(window.XRWebGLBinding));
+ if(!navigator.xr){say('RESULT: WebXR is unavailable in this browser.');start.textContent='AR unavailable';return;}
+ try{const supported=await navigator.xr.isSessionSupported('immersive-ar');say('immersive-ar supported: '+supported);start.disabled=!supported;start.textContent=supported?'Start camera access test':'AR unavailable';}catch(e){say('WebXR support check failed: '+e.name+' — '+e.message);start.textContent='AR unavailable';}
+}
+start.onclick=async()=>{
+ start.disabled=true;lines.length=0;frames=0;cameraSeen=false;textureSeen=false;hitTestSeen=false;
+ say('Requesting immersive-ar with optional camera-access and hit-test…');
+ try{
+  const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl2',{alpha:true,xrCompatible:true})||canvas.getContext('webgl',{alpha:true,xrCompatible:true});
+  if(!gl)throw Error('WebGL is unavailable');
+  if(gl.makeXRCompatible)await gl.makeXRCompatible();
+  session=await navigator.xr.requestSession('immersive-ar',{optionalFeatures:['camera-access','hit-test','dom-overlay'],domOverlay:{root:overlay}});
+  session.addEventListener('end',()=>{session=null;overlay.classList.remove('active');start.disabled=false;say('AR session ended.');});
+  session.updateRenderState({baseLayer:new XRWebGLLayer(session,gl)});
+  const ref=await session.requestReferenceSpace('local');
+  overlay.classList.add('active');
+  say('AR session started. Move device slowly and scan the room.');
+  if(session.requestHitTestSource){try{const viewer=await session.requestReferenceSpace('viewer');const source=await session.requestHitTestSource({space:viewer});say('Hit-test source created: YES');hitTestSeen=true;session.addEventListener('end',()=>source.cancel());}catch(e){say('Hit-test source: unavailable ('+e.name+')');}}else say('Hit-test API: unavailable');
+  let binding=null;try{if(window.XRWebGLBinding){binding=new XRWebGLBinding(session,gl);say('XRWebGLBinding constructed: YES');}else say('XRWebGLBinding: unavailable');}catch(e){say('XRWebGLBinding error: '+e.name);}
+  function frame(t,xrFrame){if(!session)return;session.requestAnimationFrame(frame);frames++;const pose=xrFrame.getViewerPose(ref);if(!pose||!pose.views.length)return;
+   for(const view of pose.views){if(view.camera&&!cameraSeen){cameraSeen=true;say('XRView.camera exposed: YES');}
+    if(view.camera&&binding&&!textureSeen){try{const tex=binding.getCameraImage(view.camera);if(tex){textureSeen=true;say('getCameraImage returned a WebGL texture: YES');say('NOTE: Marker pixel processing is NOT verified by this test.');}}catch(e){if(frames===30)say('getCameraImage failed: '+e.name+' — '+e.message);}}
+   }
+   if(frames===120){if(!cameraSeen)say('XRView.camera exposed: NO (after 120 frames)');if(!textureSeen)say('Camera texture available: NO (after 120 frames)');say('Hit-test API source created: '+hitTestSeen);say('TEST COMPLETE. Save a screenshot of this result.');}
+  }
+  session.requestAnimationFrame(frame);
+ }catch(e){say('Cannot start test: '+e.name+' — '+e.message);overlay.classList.remove('active');start.disabled=false;}
+};
+document.getElementById('end').onclick=()=>session?.end();check();
+</script>
+</body>
+</html>
