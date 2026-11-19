@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CPR Marker + SLAM Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101820;color:white;font-family:system-ui,sans-serif}
+#info{position:fixed;z-index:5;top:12px;left:12px;right:12px;padding:12px;background:#000c;border-radius:12px;white-space:pre-line;font-size:13px;line-height:1.5}
+#panel{position:fixed;z-index:6;bottom:20px;left:10px;right:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+button{padding:12px 16px;border:0;border-radius:22px;background:#20c9ad;color:#062722;font-weight:bold}button:disabled{opacity:.5}
+input{width:70px}#setup{position:fixed;z-index:5;top:130px;left:12px;right:12px;background:#0009;padding:12px;border-radius:10px;font-size:14px}
+</style>
+</head>
+<body>
+<div id="info">Marker + SLAM test. Enter the printed marker width, then tap Start AR.</div>
+<div id="setup">Printed marker width: <input id="width" type="number" min="5" max="100" value="15" step="0.5"> cm<br>Marker image: <code>marker_image.png</code> (same GitHub folder)</div>
+<div id="panel"><button id="start">Start AR</button><button id="reset" hidden>Reset cube</button><button id="end" hidden>End AR</button></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
+const info=document.getElementById('info');
+const start=document.getElementById('start');
+const reset=document.getElementById('reset');
+const end=document.getElementById('end');
+const setup=document.getElementById('setup');
+const width=document.getElementById('width');
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.01,100);
+const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.xr.enabled=true;renderer.xr.setReferenceSpaceType('local');
+document.body.appendChild(renderer.domElement);
+const cube=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.12),new THREE.MeshBasicMaterial({color:0x00ff66,depthTest:false,depthWrite:false}));
+cube.visible=false;cube.renderOrder=10;cube.frustumCulled=false;scene.add(cube);
+const edges=new THREE.LineSegments(new THREE.EdgesGeometry(cube.geometry),new THREE.LineBasicMaterial({color:0x003322,depthTest:false}));cube.add(edges);
+let session=null,locked=false,everTracked=false,lastState='waiting',lastStatus=0,bitmap=null;
+function message(s){info.textContent=s;}
+function cleanup(){session=null;locked=false;everTracked=false;lastState='waiting';cube.visible=false;start.hidden=false;start.disabled=false;reset.hidden=true;end.hidden=true;setup.hidden=false;}
+start.onclick=async()=>{
+ start.disabled=true;let created=null;
+ try{
+  if(!navigator.xr||!(await navigator.xr.isSessionSupported('immersive-ar')))throw new Error('This phone/browser does not support immersive WebXR AR.');
+  const cm=Number(width.value);if(!Number.isFinite(cm)||cm<5||cm>100)throw new Error('Enter the real printed marker width (5–100 cm).');
+  message('Loading marker_image.png...');
+  const response=await fetch('./marker_image.png',{cache:'no-store'});
+  if(!response.ok)throw new Error('Cannot load marker_image.png ('+response.status+'). Upload the exact printed marker image to this folder.');
+  const blob=await response.blob();bitmap=await createImageBitmap(blob);
+  message('Requesting one AR session with image tracking + SLAM...');
+  created=await navigator.xr.requestSession('immersive-ar',{
+   requiredFeatures:['local','image-tracking'],
+   optionalFeatures:['dom-overlay'],
+   domOverlay:{root:document.body},
+   trackedImages:[{image:bitmap,widthInMeters:cm/100}]
+  });
+  session=created;
+  created.addEventListener('end',()=>{if(session===created)cleanup();message('AR session ended.');},{once:true});
+  await renderer.xr.setSession(created);
+  setup.hidden=true;start.hidden=true;reset.hidden=false;end.hidden=false;
+  message('AR started. Point at the printed marker. The green cube will lock to its first detected position.');
+  if(typeof created.getImageTrackability==='function'){
+   const t=await created.getImageTrackability();
+   if(t[0]==='untrackable')message('The image is unsuitable for WebXR tracking. Try a more detailed, high-contrast marker.');
+  }
+ }catch(e){
+  if(created){try{await created.end()}catch(_){}}
+  cleanup();message('Cannot start combined marker + SLAM tracking: '+e.message+'\n\nOn Android Chrome try enabling chrome://flags/#webxr-incubations and restarting Chrome. Image tracking may still be unsupported on this device.');
+ }
+};
+reset.onclick=()=>{locked=false;everTracked=false;cube.visible=false;message('Cube reset. Point at the marker again.');};
+end.onclick=()=>session?.end();
+renderer.setAnimationLoop((time,frame)=>{
+ if(frame&&session){
+  const ref=renderer.xr.getReferenceSpace();
+  if(ref){
+   if(typeof frame.getImageTrackingResults!=='function'){
+    if(time-lastStatus>2000){message('Image-tracking API unavailable in this AR session. This device cannot run the combined test.');lastStatus=time;}
+   }else{
+    try{
+     const results=frame.getImageTrackingResults();
+     const image=results.find(r=>r.index===0);
+     lastState=image?.trackingState||'not visible';
+     if(image&&image.trackingState==='tracked'){
+      const pose=frame.getPose(image.imageSpace,ref);
+      if(pose){everTracked=true;
+       if(!locked){
+        cube.position.set(pose.transform.position.x,pose.transform.position.y,pose.transform.position.z);
+        cube.quaternion.set(pose.transform.orientation.x,pose.transform.orientation.y,pose.transform.orientation.z,pose.transform.orientation.w);
+        const forward=new THREE.Vector3(0,0,1).applyQuaternion(cube.quaternion);
+        cube.position.addScaledVector(forward,.09);
+        cube.visible=true;locked=true;
+       }
+      }
+     }
+     if(time-lastStatus>1200){
+      message('Marker tracking: '+lastState+'\nCube locked: '+(locked?'YES':'NO')+'\n'+(locked?'Move slowly around the marker. The cube should remain at the original world position.':'Point the camera at the printed marker.')+'\nMarker ever detected: '+(everTracked?'YES':'NO'));
+      lastStatus=time;
+     }
+    }catch(e){if(time-lastStatus>1500){message('Image tracking error: '+e.message);lastStatus=time;}}
+   }
+  }
+ }
+ renderer.render(scene,camera);
+});
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body>
+</html>
