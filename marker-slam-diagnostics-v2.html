@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CPR Marker + SLAM Diagnostics v2</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101820;color:#fff;font-family:system-ui,sans-serif}
+canvas{position:fixed;inset:0}
+#info{position:fixed;z-index:5;top:8px;left:8px;right:8px;padding:11px;background:#000d;border-radius:12px;white-space:pre-line;font-size:12px;line-height:1.4;pointer-events:none;max-height:58vh;overflow:hidden}
+#panel{position:fixed;z-index:6;bottom:18px;left:8px;right:8px;display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+button{padding:12px 14px;border:0;border-radius:22px;background:#20c9ad;color:#062722;font-weight:700}button:disabled{opacity:.5}
+#setup{position:fixed;z-index:5;top:140px;left:10px;right:10px;background:#000a;padding:12px;border-radius:10px;font-size:14px}input{width:70px}
+</style>
+</head>
+<body>
+<div id="info">Marker + SLAM diagnostic v2. Enter the width of the printed TRACKED IMAGE (not the whole sheet).</div>
+<div id="setup">Tracked image width: <input id="width" type="number" min="5" max="100" value="15" step="0.5"> cm<br>Reference: <code>marker_image.png</code> in the same folder.</div>
+<div id="panel"><button id="start">Start AR</button><button id="reset" hidden>Reset placement</button><button id="end" hidden>End AR</button></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
+const $=id=>document.getElementById(id);
+const info=$('info'),start=$('start'),reset=$('reset'),end=$('end'),setup=$('setup'),width=$('width');
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.01,100);
+const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.xr.enabled=true;renderer.xr.setReferenceSpaceType('local');
+document.body.appendChild(renderer.domElement);
+const cube=new THREE.Mesh(new THREE.BoxGeometry(.10,.10,.10),new THREE.MeshBasicMaterial({color:0x00ff66,depthTest:false,depthWrite:false}));
+cube.visible=false;cube.renderOrder=10;cube.frustumCulled=false;scene.add(cube);
+cube.add(new THREE.LineSegments(new THREE.EdgesGeometry(cube.geometry),new THREE.LineBasicMaterial({color:0x003322,depthTest:false})));
+// The crosshair is attached to the cube, not the screen. It makes rotations easier to judge.
+const axes=new THREE.AxesHelper(.18);axes.material.depthTest=false;axes.renderOrder=11;cube.add(axes);
+let session=null,anchor=null,anchorPending=false,anchorStatus='not requested',placed=false,mode='none',poseAvailable=false;
+let trackedCount=0,emulatedCount=0,markerState='waiting',stableSamples=[],lastStatus=0,bitmap=null;
+let baselineOffset=null,baselineRotation=null,lastMeasured=null,peakPosition=0,peakRotation=0,validSamples=0;
+let cameraDistance=null,inView=null,markerAnchorDistance=null,markerAnchorAngle=null;
+let errorText='';
+const offset=new THREE.Vector3(0,0,.09),pVec=new THREE.Vector3(),qVec=new THREE.Quaternion();
+const markerP=new THREE.Vector3(),anchorP=new THREE.Vector3(),markerQ=new THREE.Quaternion(),anchorQ=new THREE.Quaternion();
+const relP=new THREE.Vector3(),relQ=new THREE.Quaternion(),tmpP=new THREE.Vector3(),screenP=new THREE.Vector3();
+function message(s){info.textContent=s;}
+function clearPlacement(){
+ if(anchor){try{anchor.delete()}catch(_){}}
+ anchor=null;anchorPending=false;anchorStatus='not requested';placed=false;mode='none';poseAvailable=false;cube.visible=false;
+ stableSamples=[];baselineOffset=null;baselineRotation=null;lastMeasured=null;peakPosition=0;peakRotation=0;validSamples=0;
+ cameraDistance=null;inView=null;markerAnchorDistance=null;markerAnchorAngle=null;errorText='';
+}
+function cleanup(){session=null;clearPlacement();trackedCount=0;emulatedCount=0;markerState='waiting';start.hidden=false;start.disabled=false;reset.hidden=true;end.hidden=true;setup.hidden=false;}
+function setCubePose(pose){const p=pose.transform.position,q=pose.transform.orientation;cube.position.set(p.x,p.y,p.z);cube.quaternion.set(q.x,q.y,q.z,q.w);cube.visible=true;}
+function fallbackPlacement(pose){const p=pose.transform.position,q=pose.transform.orientation;pVec.set(p.x,p.y,p.z);qVec.set(q.x,q.y,q.z,q.w);cube.position.copy(pVec).add(offset.clone().applyQuaternion(qVec));cube.quaternion.copy(qVec);cube.visible=true;placed=true;mode='fixed world (no anchor)';}
+start.onclick=async()=>{
+ start.disabled=true;let created=null;
+ try{
+  if(!navigator.xr||!(await navigator.xr.isSessionSupported('immersive-ar')))throw Error('Immersive WebXR AR unsupported.');
+  const cm=Number(width.value);if(!Number.isFinite(cm)||cm<5||cm>100)throw Error('Width must be 5–100 cm.');
+  message('Loading marker image...');const response=await fetch('./marker_image.png',{cache:'no-store'});
+  if(!response.ok)throw Error('marker_image.png missing: HTTP '+response.status);
+  bitmap=await createImageBitmap(await response.blob());
+  created=await navigator.xr.requestSession('immersive-ar',{
+   requiredFeatures:['local','image-tracking'],optionalFeatures:['anchors','dom-overlay'],
+   domOverlay:{root:document.body},trackedImages:[{image:bitmap,widthInMeters:cm/100}]
+  });
+  session=created;
+  created.addEventListener('end',()=>{if(session===created){cleanup();message('AR ended.');}},{once:true});
+  await renderer.xr.setSession(created);
+  setup.hidden=true;start.hidden=true;reset.hidden=false;end.hidden=false;
+  message('Point at the printed marker. Keep it in view until cube appears.');
+  if(typeof created.getImageTrackability==='function'){
+   const t=await created.getImageTrackability();if(t[0]==='untrackable')message('This marker image is untrackable.');
+  }
+ }catch(e){if(created){try{await created.end()}catch(_){}}cleanup();message('AR start failed: '+e.message);}
+};
+reset.onclick=()=>{clearPlacement();message('Placement reset. Aim at marker again.');};
+end.onclick=()=>session?.end();
+renderer.setAnimationLoop((time,frame)=>{
+ if(frame&&session){
+  const ref=renderer.xr.getReferenceSpace();
+  if(ref){try{
+   const results=typeof frame.getImageTrackingResults==='function'?frame.getImageTrackingResults():[];
+   const image=results.find(r=>r.index===0);
+   markerState=image?.trackingState||'not visible';
+   if(markerState==='tracked')trackedCount++;
+   if(markerState==='emulated')emulatedCount++;
+   const markerPose=markerState==='tracked'?frame.getPose(image.imageSpace,ref):null;
+   if(markerPose){
+    if(!placed&&!anchorPending){
+     const p=markerPose.transform.position;
+     stableSamples.push(new THREE.Vector3(p.x,p.y,p.z));if(stableSamples.length>12)stableSamples.shift();
+     if(stableSamples.length===12){
+      const avg=new THREE.Vector3();stableSamples.forEach(v=>avg.add(v));avg.multiplyScalar(1/12);
+      const jitter=Math.max(...stableSamples.map(v=>v.distanceTo(avg)));
+      if(jitter<.035){
+       if(typeof frame.createAnchor==='function'){
+        anchorPending=true;anchorStatus='creating';const activeSession=session;
+        frame.createAnchor(new XRRigidTransform({x:0,y:0,z:.09}),image.imageSpace).then(a=>{
+         if(session!==activeSession||!anchorPending){try{a.delete()}catch(_){}return;}
+         anchor=a;anchorStatus='created';placed=true;mode='WebXR anchor';anchorPending=false;
+        }).catch(e=>{if(session!==activeSession||!anchorPending)return;anchorPending=false;anchorStatus='failed: '+e.message;fallbackPlacement(markerPose);});
+       }else{anchorStatus='unsupported';fallbackPlacement(markerPose);}
+      }
+     }
+    }
+   }else if(!placed&&!anchorPending){stableSamples=[];}
+   if(anchor){
+    const anchorPose=frame.getPose(anchor.anchorSpace,ref);
+    poseAvailable=!!anchorPose;
+    if(anchorPose){setCubePose(anchorPose);
+     const viewerPose=frame.getViewerPose(ref);
+     if(viewerPose){
+      const vp=viewerPose.transform.position;
+      cameraDistance=Math.hypot(cube.position.x-vp.x,cube.position.y-vp.y,cube.position.z-vp.z);
+     }
+     const xrCam=renderer.xr.getCamera(camera);
+     xrCam.updateMatrixWorld(true);
+     screenP.copy(cube.position).project(xrCam);
+     inView=Number.isFinite(screenP.x)&&Number.isFinite(screenP.y)&&Number.isFinite(screenP.z)&&Math.abs(screenP.x)<=1.1&&Math.abs(screenP.y)<=1.1&&screenP.z>=-1&&screenP.z<=1;
+    }else{cube.visible=false;cameraDistance=null;inView=null;}
+    // Only 'tracked' yields an independent, visually updated marker pose.
+    // 'emulated' is inferred from SLAM, so it cannot independently measure drift.
+    if(anchorPose&&markerPose){
+     const mp=markerPose.transform.position,mq=markerPose.transform.orientation;
+     const ap=anchorPose.transform.position,aq=anchorPose.transform.orientation;
+     markerP.set(mp.x,mp.y,mp.z);markerQ.set(mq.x,mq.y,mq.z,mq.w);
+     anchorP.set(ap.x,ap.y,ap.z);anchorQ.set(aq.x,aq.y,aq.z,aq.w);
+     relP.copy(anchorP).sub(markerP).applyQuaternion(markerQ.clone().invert());
+     relQ.copy(markerQ).invert().multiply(anchorQ);
+     markerAnchorDistance=markerP.distanceTo(anchorP)*100;
+     markerAnchorAngle=THREE.MathUtils.radToDeg(markerQ.angleTo(anchorQ));
+     if(baselineOffset===null){baselineOffset=relP.clone();baselineRotation=relQ.clone();}
+     const cm=relP.distanceTo(baselineOffset)*100;
+     const deg=THREE.MathUtils.radToDeg(relQ.angleTo(baselineRotation));
+     lastMeasured={cm,deg};validSamples++;
+     peakPosition=Math.max(peakPosition,cm);peakRotation=Math.max(peakRotation,deg);
+    }
+   }
+   if(time-lastStatus>900){
+    let driftText='No independent measurement yet';
+    if(markerState==='emulated')driftText='N/A now: marker pose is EMULATED (SLAM estimate)';
+    else if(markerState!=='tracked')driftText='N/A now: marker not visually tracked';
+    else if(lastMeasured)driftText='Position '+lastMeasured.cm.toFixed(1)+' cm | Rotation '+lastMeasured.deg.toFixed(1)+'°';
+    const summary='Marker: '+markerState+' | tracked frames: '+trackedCount+' | emulated: '+emulatedCount+
+     '\nPlacement: '+(placed?'YES':'waiting')+' | Mode: '+mode+
+     '\nAnchor: '+anchorStatus+' | Pose: '+(anchor?(poseAvailable?'available':'unavailable'):'n/a')+
+     '\nCurrent drift: '+driftText+
+     '\nLast valid tracked sample: '+(lastMeasured?lastMeasured.cm.toFixed(1)+' cm, '+lastMeasured.deg.toFixed(1)+'°':'none')+
+     '\nPeak (tracked only): '+(validSamples?peakPosition.toFixed(1)+' cm, '+peakRotation.toFixed(1)+'°':'N/A')+' | samples: '+validSamples+
+     '\nCube distance: '+(cameraDistance===null?'N/A':cameraDistance.toFixed(2)+' m')+
+     ' | In camera view: '+(inView===null?'N/A':inView?'YES':'NO')+
+     '\n'+(markerState==='emulated'?'EMULATED = predicted from SLAM, not a fresh image detection.':'Keep marker visible while walking slowly.')+
+     (errorText?'\n'+errorText:'');
+    message(summary);lastStatus=time;
+   }
+  }catch(e){if(time-lastStatus>1000){errorText='Tracking error: '+e.message;message(errorText);lastStatus=time;}}}
+ }
+ renderer.render(scene,camera);
+});
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script>
+</body>
+</html>
